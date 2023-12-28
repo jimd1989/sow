@@ -8,3 +8,6 @@
 
 /* Operator count */
 #define SYNTH_OPERATORS 8
+
+/* Shift needed to convert 32 bit phase to 10 bit (1024) wavetable index */
+#define SYNTH_SHIFT 22
