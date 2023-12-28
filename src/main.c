@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "midi/midi_config.h"
+#include "midi/midi_init.h"
 #include "midi/midi_reader.h"
 
 #ifdef TEST
