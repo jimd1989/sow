@@ -6,6 +6,8 @@
 #include "audio_init.h"
 #include "audio_writer.h"
 
+#include "../synth/noise.h" /* Delete this later */
+
 static void wait(Sio *);
 
 static void wait(Sio *sio) {
@@ -29,6 +31,10 @@ void writeAudio(AudioWriter *aw) {
   uint8_t u = 0;
   uint8_t l = 0;
   int16_t sample = 0;
+
+  /* Delete this later */
+  noise(&aw->rng, aw->synthData, aw->sizeFrames);
+
   for (; s < aw->sizeFrames ; s++) {
     sample = aw->synthData[s];
     u = (uint8_t)(sample & 255);

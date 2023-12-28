@@ -6,10 +6,13 @@
 
 #include "audio_config.h"
 
+#include "../synth/noise.h" /* Delete this later */
+
 typedef struct sio_hdl Sio;
 typedef struct sio_par SioPar;
 
 typedef struct AudioWriter {
+  Rng       rng; /* Delete this later */
   size_t    sizeFrames;
   size_t    sizeBytes;
   SioPar    par;
