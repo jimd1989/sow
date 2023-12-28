@@ -7,8 +7,6 @@
 #include "audio_constants.h"
 #include "audio_init.h"
 
-#include "../synth/noise.h" /* Delete this later */
-
 static NegotiatedAudioConfig negotiatedConfig(AudioConfig);
 static SioPar setConfig(NegotiatedAudioConfig);
 static void suggestConfig(Sio *, SioPar *);
@@ -79,7 +77,6 @@ AudioWriter audioWriter(AudioConfig ac) {
   aw.output = malloc(aw.sizeBytes);
   if (aw.output == NULL) { errx(1, "Error allocating audio buffer"); }
   if (sio_start(aw.sio) == 0) { errx(1, "Error starting audio"); }
-  aw.rng = rng(); /* Delete this later */
   return aw;
 }
 
