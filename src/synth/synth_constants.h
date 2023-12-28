@@ -11,3 +11,6 @@
 
 /* Operator count; most likely not possible to overwrite */
 #define SYNTH_OPERATORS 8
+
+/* Number of keys on keyboard */
+#define SYNTH_KEYS 128

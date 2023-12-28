@@ -1,0 +1,6 @@
+- Scale keyboard
+- Noise output as 16.16
+- Internal synth buffer as 16.16
+- Test/refine sine
+- Envelopes
+- Basic MIDI input
