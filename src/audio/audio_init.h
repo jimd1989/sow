@@ -14,15 +14,17 @@ typedef struct AudioWriter {
   size_t    sizeBytes;
   SioPar    par;
   Sio     * sio;
-  uint8_t * data;
+  int16_t * synthData;
+  uint8_t * output;
 } AudioWriter;
 
-typedef struct NegotiatedAudioSettings {
-  int bits;
-  int blocks;
-  int bufSizeFrames;
-  int chan;
-  int rate;
-} NegotiatedAudioSettings;
+typedef struct NegotiatedAudioConfig {
+  size_t  bits;
+  size_t  blocks;
+  size_t  bufSizeFrames;
+  size_t  chan;
+  size_t  rate;
+} NegotiatedAudioConfig;
 
 AudioWriter audioWriter(AudioConfig);
+void killAudio(AudioWriter *);

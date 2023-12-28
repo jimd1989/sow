@@ -22,3 +22,9 @@ MidiReader midiReader(MidiConfig mc) {
   }
   return m;
 }
+
+void killMidi(MidiReader *mr) {
+  if (mr->enabled) {
+    mio_close(mr->mio);
+  }
+}

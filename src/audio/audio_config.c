@@ -4,16 +4,16 @@
 
 #include "audio_config.h"
 
-static int rate(char *);
+static size_t rate(char *);
 static size_t blocks(char *);
 static size_t chan(char *);
 
-static int rate(char *a) {
+static size_t rate(char *a) {
   int n = atoi(a);
   if (n < 1) {
     errx(1, "-rate must be greater than 0; provided %d", n);
   }
-  return n;
+  return (size_t)n;
 }
 
 static size_t blocks(char *a) {
@@ -35,7 +35,7 @@ static size_t chan(char *a) {
 AudioConfig audioConfig(int argc, char **argv) {
   int i = 0;
   char *a = NULL;
-  int defaultRate = 48000;
+  size_t defaultRate = 48000;
   size_t defaultBlocks = 1;
   size_t defaultChannels = 2;
   AudioConfig ac = {0};

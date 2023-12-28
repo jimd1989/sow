@@ -19,3 +19,4 @@ typedef struct MidiReader {
 } MidiReader;
 
 MidiReader midiReader(MidiConfig);
+void killMidi(MidiReader *);
