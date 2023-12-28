@@ -7,13 +7,16 @@
   #include "tests/test.h"
 #endif
 
+#ifdef TEST
+int main() { 
+  test(); 
+  return 0; 
+}
+#else
 int main(int argc, char **argv) {
-  #ifdef TEST
-  test();
-  #else
   warnx("prod");
   IO x = io(argc, argv);
   monitor(x);
-  #endif
   return 0;
 }
+#endif

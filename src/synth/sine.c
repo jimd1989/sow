@@ -20,5 +20,5 @@ int16_t sine(uint32_t phase) {
   /* Needs lots of tweaking */
   int16_t sign = phase & NEGATE ? -1 : 1; /* Can use |= */
   uint32_t directedPhase = phase & BACKWARDS ? ~phase : phase;
-  return sign * SINE_WAVE[directedPhase >> SYNTH_SHIFT];
+  return sign * SINE_WAVE[directedPhase >> SYNTH_WAVE_SHIFT];
 }
