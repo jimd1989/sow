@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "../utils/fixed_point.h"
 #include "audio_init.h"
 #include "audio_writer.h"
 
@@ -30,7 +31,8 @@ void writeAudio(AudioWriter *aw) {
   uint8_t l = 0;
   int16_t sample = 0;
   for (; s < aw->sizeFrames ; s++) {
-    sample = aw->synthData[s];
+    /* No need for dithering? Trunc okay because no floating point error ? */
+    sample = aw->synthData[s] >> F16_16_FRAC_BITS ;
     u = (uint8_t)(sample & 255);
     l = (uint8_t)(sample >> 8);
     for (c = 0 ; c < aw->par.pchan ; c++) {

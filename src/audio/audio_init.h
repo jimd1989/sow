@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#include "../utils/fixed_point.h"
 #include "audio_config.h"
 
 typedef struct sio_hdl Sio;
@@ -14,7 +15,7 @@ typedef struct AudioWriter {
   size_t    sizeBytes;
   SioPar    par;
   Sio     * sio;
-  int16_t * synthData;
+  F16_16  * synthData;
   uint8_t * output;
 } AudioWriter;
 
