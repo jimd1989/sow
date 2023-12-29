@@ -2,23 +2,27 @@
 #include <math.h>
 #include <stdint.h>
 
+#include "../utils/fixed_point.h"
 #include "sine.h"
 #include "synth_constants.h"
 
-static uint32_t NEGATE = (1 << 31);
-static uint32_t BACKWARDS = (1 << 30);
-static int16_t SINE_WAVE[SYNTH_WAVELEN] = {0};
+#define NEGATE(X, Y) ((X) |= ((Y) & (1 << 31)))
+#define BACKWARDS(X) ((X) & (1 << 30) ? ~(X) : (X))
+
+static F16_16 SINE_WAVE[SYNTH_WAVELEN] = {0};
 
 void makeSine(void) {
   int i = 0;
+  float f = 0.0f;
   for (; i < SYNTH_WAVELEN ; i++) {
-    SINE_WAVE[i] = SHRT_MAX * sin(M_PI_2 * (i / (float)(SYNTH_WAVELEN - 1)));
+    f = sin(M_PI_2 * ((float)i / (float)(SYNTH_WAVELEN - 1)));
+    SINE_WAVE[i] = (uint32_t)((float)INT_MAX * f);
   }
 }
 
-int16_t sine(uint32_t phase) {
-  /* Needs lots of tweaking */
-  int16_t sign = phase & NEGATE ? -1 : 1; /* Can use |= */
-  uint32_t directedPhase = phase & BACKWARDS ? ~phase : phase;
-  return sign * SINE_WAVE[directedPhase >> SYNTH_WAVE_SHIFT];
+/* Needs F1_31 type */
+F16_16 sine(F16_16 phase) {
+  uint16_t n = F16_16_INT(BACKWARDS(phase));
+  /* int16_t r = F16_16_FRAC(phase) use for lerp later */
+  return NEGATE(SINE_WAVE[n >> SYNTH_WAVE_SHIFT], phase);
 }
