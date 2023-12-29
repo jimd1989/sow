@@ -19,6 +19,11 @@ float f16_16_float(F16_16 x) {
   return (float)n + r;
 }
 
+F16_16 f16_16_mult(F16_16 x, F16_16 y) {
+  int64_t product = (int64_t)x * (int64_t)y;
+  return product >> F16_16_FRAC_BITS;
+}
+
 F12_20 f12_20(float f) {
   int32_t n = (int32_t)f;
   float r = f - (float)n;

@@ -1,4 +1,5 @@
 #include <err.h>
+#include <limits.h>
 
 #include "../utils/fixed_point.h"
 #include "fixed_point.h"
@@ -57,10 +58,22 @@ void testFixedPoint(void) {
   if (outputF != expectedF) {
     errx(1, "expected %f; got %f", expectedF, outputF);
   }
+  warnx(" f16_16_float(f16_16_mult(440, 2)) = 880");
+  expectedF = 880.0f;
+  outputF = f16_16_float(f16_16_mult(f16_16(440.0f), f16_16(2.0f)));
+  if (outputF != expectedF) {
+    errx(1, "expected %f; got %f", expectedF, outputF);
+  }
   warnx(" f12_20_float(f12_20(1024.5)) = 1024.5");
   expectedF = 1024.5f;
   outputF = f12_20_float(f12_20(1024.5f));
   if (outputF != expectedF) {
     errx(1, "expected %f; got %f", expectedF, outputF);
+  }
+  warnx(" F12_20_INT(UINT_MAX) = 4095");
+  expected = 4095;
+  output = F12_20_INT(UINT_MAX);
+  if (output != expected) {
+    errx(1, "expected %d; got %d", expected, output);
   }
 }
