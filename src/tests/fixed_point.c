@@ -7,6 +7,8 @@
 void testFixedPoint(void) {
   F16_16 output = 0;
   F16_16 expected = 0;
+  float outputF = 0.0f;
+  float expectedF = 0.0f;
   warnx("fixed point numbers");
   warnx(" f16_16(0.25) = 16384");
   expected = 16384;
@@ -31,5 +33,29 @@ void testFixedPoint(void) {
   output = f16_16(440.0f);
   if (output != expected) {
     errx(1, "expected %d; got %d", expected, output);
+  }
+  warnx(" f16_16_float(f16_16(0.25)) = 0.25");
+  expectedF = 0.25f;
+  outputF = f16_16_float(f16_16(0.25f));
+  if (outputF != expectedF) {
+    errx(1, "expected %f; got %f", expectedF, outputF);
+  }
+  warnx(" f16_16_float(f16_16(3.75)) = 3.75");
+  expectedF = 3.75f;
+  outputF = f16_16_float(f16_16(3.75f));
+  if (outputF != expectedF) {
+    errx(1, "expected %f; got %f", expectedF, outputF);
+  }
+  warnx(" f16_16_float(f16_16(-4.53)) ~= -4.53");
+  expectedF = -4.529999f;
+  outputF = f16_16_float(f16_16(-4.53f));
+  if (outputF != expectedF) {
+    errx(1, "expected %f; got %f", expectedF, outputF);
+  }
+  warnx(" f16_16_float(f16_16(440)) = 440");
+  expectedF = 440.0f;
+  outputF = f16_16_float(f16_16(440.0f));
+  if (outputF != expectedF) {
+    errx(1, "expected %f; got %f", expectedF, outputF);
   }
 }
