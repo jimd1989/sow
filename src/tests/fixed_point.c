@@ -64,16 +64,10 @@ void testFixedPoint(void) {
   if (outputF != expectedF) {
     errx(1, "expected %f; got %f", expectedF, outputF);
   }
-  warnx(" f12_20_float(f12_20(1024.5)) = 1024.5");
+  warnx(" uf24_8_float(uf24_8(1024.5)) = 1024.5");
   expectedF = 1024.5f;
-  outputF = f12_20_float(f12_20(1024.5f));
+  outputF = uf24_8_float(uf24_8(1024.5f));
   if (outputF != expectedF) {
     errx(1, "expected %f; got %f", expectedF, outputF);
-  }
-  warnx(" F12_20_INT(UINT_MAX) = 4095");
-  expected = 4095;
-  output = F12_20_INT(UINT_MAX);
-  if (output != expected) {
-    errx(1, "expected %d; got %d", expected, output);
   }
 }

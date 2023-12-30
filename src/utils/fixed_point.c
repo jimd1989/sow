@@ -24,16 +24,21 @@ F16_16 f16_16_mult(F16_16 x, F16_16 y) {
   return product >> F16_16_FRAC_BITS;
 }
 
-F12_20 f12_20(float f) {
-  int32_t n = (int32_t)f;
+UF24_8 uf24_8(float f) {
+  uint32_t n = (int32_t)f;
   float r = f - (float)n;
-  F16_16 x = n << F12_20_FRAC_BITS;
-  x += (int32_t)(F12_20_ONE * r);
+  UF24_8 x = n << UF24_8_FRAC_BITS;
+  x += (uint32_t)(UF24_8_ONE * r);
   return x;
 }
 
-float f12_20_float(F12_20 x) {
-  int32_t n = F12_20_INT(x);
-  float r = (float)F12_20_FRAC(x) / (float)F12_20_ONE;
+float uf24_8_float(UF24_8 x) {
+  uint32_t n = UF24_8_INT(x);
+  float r = (float)UF24_8_FRAC(x) / (float)UF24_8_ONE;
   return (float)n + r;
+}
+
+UF24_8 uf24_8_mult(UF24_8 x, UF24_8 y) {
+  uint64_t product = (uint64_t)x * (uint64_t)y;
+  return product >> UF24_8_FRAC_BITS;
 }

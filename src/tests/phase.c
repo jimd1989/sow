@@ -7,18 +7,21 @@
 #include "phase.h"
 
 void testPhase(void) {
-  F16_16 output = 0;
-  F16_16 expected = 0;
-  int expectedI = 0;
-  int outputI = 0;
+  int i = 0;
+  UF24_8 inc = 0;
+  UF24_8 oldPhase = 0;
+  UF24_8 newPhase = 0;
   warnx("wave phase");
-  warnx(" ");
+  warnx(" where rate = 48k and pitch = 440hz, cycle after 110 samples");
   setPhase(48000);
-  expectedI = 109;
-  output = phaseIncrement(1.0f);
-  warnx("INC %f", f16_16_float(output));
-  outputI = (int)f16_16_float(phaseIncrement(440.0f));
-  if (outputI != expectedI) {
-    errx(1, "expected %d; got %d", expected, output);
+  inc = phaseIncrement(440.0f);
+  for (i = 0 ; i < 110 ; i++) {
+    oldPhase = newPhase;
+    newPhase += inc;
+  }
+  newPhase = UF24_8_INT(newPhase);
+  oldPhase = UF24_8_INT(oldPhase);
+  if (newPhase > oldPhase) {
+    errx(1, "expected %u to overflow behind %u", newPhase, oldPhase);
   }
 }
