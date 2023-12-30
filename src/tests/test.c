@@ -7,5 +7,5 @@
 void test(void) {
   testFixedPoint();
   testPhase();
-//  testSine();
+  testSine();
 }

@@ -21,7 +21,8 @@
 #define UF24_8_FRAC(X) ((X) & UF24_8_FRAC_MASK)
 
 typedef int32_t F16_16;
-typedef uint32_t UF24_8; /* Signed vs unsigned makes a difference? */
+/* Signed vs unsigned can be significant? */
+typedef uint32_t UF24_8;
 
 F16_16 f16_16(float);
 float f16_16_float(F16_16);

@@ -24,4 +24,18 @@ void testPhase(void) {
   if (newPhase > oldPhase) {
     errx(1, "expected %u to overflow behind %u", newPhase, oldPhase);
   }
+  warnx(" where rate = 4k and pitch = 440hz, cycle after 10 samples");
+  setPhase(4000);
+  inc = phaseIncrement(440.0f);
+  oldPhase = 0;
+  newPhase = 0;
+  for (i = 0 ; i < 10 ; i++) {
+    oldPhase = newPhase;
+    newPhase += inc;
+  }
+  newPhase = UF24_8_INT(newPhase);
+  oldPhase = UF24_8_INT(oldPhase);
+  if (newPhase > oldPhase) {
+    errx(1, "expected %u to overflow behind %u", newPhase, oldPhase);
+  }
 }
