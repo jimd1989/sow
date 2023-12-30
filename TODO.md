@@ -1,6 +1,6 @@
 - Scale keyboard
-- Noise output as 16.16
-- Internal synth buffer as 16.16
-- Test/refine sine
+- refine sine
+  - branch free BACKWARDS and NEGATE?
+  - [0, 1] vs [0, `SHRT_MAX`]
 - Envelopes
 - Basic MIDI input

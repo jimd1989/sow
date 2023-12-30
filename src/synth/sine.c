@@ -8,6 +8,7 @@
 static F16_16 SINE_WAVE[SYNTH_WAVELEN] = {0};
 
 /* For a sine cycle [-1, 1], draw a quarter curve [0, 1] */
+/* Currently literally [0, 1], but maybe should be [0, SHRT_MAX] */
 void makeSine(void) {
   int i = 0;
   float f = 0.0f;
@@ -19,9 +20,7 @@ void makeSine(void) {
 
 F16_16 sine(UF24_8 phase) {
   /* Still need:
-   *   negation
-   *   backwards
    *   fractional lerp */
-  int i = INDEX(phase);
-  return SINE_WAVE[i];
+  int i = INDEX(BACKWARDS(phase));
+  return NEGATE(SINE_WAVE[i], phase);
 }

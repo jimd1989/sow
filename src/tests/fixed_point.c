@@ -64,6 +64,24 @@ void testFixedPoint(void) {
   if (outputF != expectedF) {
     errx(1, "expected %f; got %f", expectedF, outputF);
   }
+  warnx(" f16_16_float(f16_16_f1_16(SHRT_MAX)) ~= 1");
+  expectedF = 0.999969482421875f;
+  outputF = f16_16_float(f16_16_f1_16(SHRT_MAX));
+  if (outputF != expectedF) {
+    errx(1, "expected %f; got %f", expectedF, outputF);
+  }
+  warnx(" f16_16_float(f16_16_f1_16(-SHRT_MAX)) ~= -1");
+  expectedF = -0.999969482421875f;
+  outputF = f16_16_float(f16_16_f1_16(-SHRT_MAX));
+  if (outputF != expectedF) {
+    errx(1, "expected %f; got %f", expectedF, outputF);
+  }
+  warnx(" f16_16_float(f16_16_f1_16(SHRT_MAX ÷ 2)) ~= 0.5");
+  expectedF = 0.5;
+  outputF = f16_16_float(f16_16_f1_16(SHRT_MAX / 8));
+  if (outputF != expectedF) {
+    errx(1, "expected %f; got %f %d", expectedF, outputF, SHRT_MAX / 8);
+  }
   warnx(" uf24_8_float(uf24_8(1024.5)) = 1024.5");
   expectedF = 1024.5f;
   outputF = uf24_8_float(uf24_8(1024.5f));
