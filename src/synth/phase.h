@@ -5,4 +5,4 @@
 #include <unistd.h>
 
 void setPhase(size_t);
-UF24_8 phaseIncrement(float);
+UF16_16 phaseIncrement(float);

@@ -5,7 +5,7 @@
 #include "../utils/fixed_point.h"
 #include "phase.h"
 
-static UF24_8 PHASE_STEP;
+static UF16_16 PHASE_STEP;
 
 /* 1.  Regardless of decimal position, phase is represented by 32 bit integer.
  * 2.  An overflow represents a completed wave cycle.
@@ -19,10 +19,10 @@ static UF24_8 PHASE_STEP;
  * 10. phaseIncrement(hz) provides fixed point increment for float hz. */
 
 void setPhase(size_t rate) {
-  float f = (float)UF24_8_INT(UINT_MAX) / (float)rate;
-  PHASE_STEP = uf24_8(f);
+  float f = (float)F16_16_INT(UINT_MAX) / (float)rate;
+  PHASE_STEP = uf16_16(f);
 }
 
-UF24_8 phaseIncrement(float freq) {
-  return uf24_8_mult(uf24_8(freq), PHASE_STEP);
+UF16_16 phaseIncrement(float freq) {
+  return f16_16_mult(f16_16(freq), PHASE_STEP);
 }

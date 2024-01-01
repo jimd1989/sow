@@ -8,9 +8,9 @@
 
 void testPhase(void) {
   int i = 0;
-  UF24_8 inc = 0;
-  UF24_8 oldPhase = 0;
-  UF24_8 newPhase = 0;
+  UF16_16 inc = 0;
+  UF16_16 oldPhase = 0;
+  UF16_16 newPhase = 0;
   warnx("wave phase");
   warnx(" where rate = 48k and pitch = 440hz, cycle after 110 samples");
   setPhase(48000);
@@ -19,8 +19,8 @@ void testPhase(void) {
     oldPhase = newPhase;
     newPhase += inc;
   }
-  newPhase = UF24_8_INT(newPhase);
-  oldPhase = UF24_8_INT(oldPhase);
+  newPhase = F16_16_INT(newPhase);
+  oldPhase = F16_16_INT(oldPhase);
   if (newPhase > oldPhase) {
     errx(1, "expected %u to overflow behind %u", newPhase, oldPhase);
   }
@@ -33,8 +33,8 @@ void testPhase(void) {
     oldPhase = newPhase;
     newPhase += inc;
   }
-  newPhase = UF24_8_INT(newPhase);
-  oldPhase = UF24_8_INT(oldPhase);
+  newPhase = F16_16_INT(newPhase);
+  oldPhase = F16_16_INT(oldPhase);
   if (newPhase > oldPhase) {
     errx(1, "expected %u to overflow behind %u", newPhase, oldPhase);
   }
