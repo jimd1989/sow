@@ -93,7 +93,7 @@ void testSine(void) {
     errx(1, "expected %.20f; got %.20f", expectedF, outputF);
   }
   warnx(" mirror wavetable index for second quadrant of a cycle: [1, 0]");
-  warnx("  sine(510) ~= sine(1537)");
+  warnx("  sine(1537) ~= sine(510)");
   phase = 0;
   for (i = 0; i < 511 ; i++) {
     phase += inc;
@@ -107,7 +107,7 @@ void testSine(void) {
   if (EXCEEDS_EPSILON(expected16, output16, SINE_EPSILON)) {
     errx(1, "expected %d; got %d", expected16, output16);
   }
-  warnx("  sine(511) ~= sine(1536)");
+  warnx("  sine(1536) ~= sine(511)");
   phase = 0;
   for (i = 0; i < 512 ; i++) {
     phase += inc;
@@ -121,7 +121,7 @@ void testSine(void) {
   if (EXCEEDS_EPSILON(expected16, output16, SINE_EPSILON)) {
     errx(1, "expected %d; got %d", expected16, output16);
   }
-  warnx("  sine(512) ~= sine(1535)");
+  warnx("  sine(1535) ~= sine(512)");
   phase = 0;
   for (i = 0; i < 513 ; i++) {
     phase += inc;
@@ -205,4 +205,46 @@ void testSine(void) {
     errx(1, "expected %d; got %d", expected16, output16);
   }
   warnx(" negate and mirror sample for fourth quadrant of a cycle: [-1, -0]");
+  warnx("  sine(3581) ~= -sine(513)");
+  phase = 0;
+  for (i = 0; i < 3582 ; i++) {
+    phase += inc;
+  }
+  expected16 = F16_16_INT(f16_16_mult(f16_16(-1.0f), sine(phase)));
+  phase = 0;
+  for (i = 0; i < 514 ; i++) {
+    phase += inc;
+  }
+  output16 = F16_16_INT(sine(phase));
+  if (EXCEEDS_EPSILON(expected16, output16, SINE_EPSILON)) {
+    errx(1, "expected %d; got %d", expected16, output16);
+  }
+  warnx("  sine(3582) ~= -sine(512)");
+  phase = 0;
+  for (i = 0; i < 3583 ; i++) {
+    phase += inc;
+  }
+  expected16 = F16_16_INT(f16_16_mult(f16_16(-1.0f), sine(phase)));
+  phase = 0;
+  for (i = 0; i < 513 ; i++) {
+    phase += inc;
+  }
+  output16 = F16_16_INT(sine(phase));
+  if (EXCEEDS_EPSILON(expected16, output16, SINE_EPSILON)) {
+    errx(1, "expected %d; got %d", expected16, output16);
+  }
+  warnx("  sine(3583) ~= -sine(511)");
+  phase = 0;
+  for (i = 0; i < 3584 ; i++) {
+    phase += inc;
+  }
+  expected16 = F16_16_INT(f16_16_mult(f16_16(-1.0f), sine(phase)));
+  phase = 0;
+  for (i = 0; i < 512 ; i++) {
+    phase += inc;
+  }
+  output16 = F16_16_INT(sine(phase));
+  if (EXCEEDS_EPSILON(expected16, output16, SINE_EPSILON)) {
+    errx(1, "expected %d; got %d", expected16, output16);
+  }
 }
