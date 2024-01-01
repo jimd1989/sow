@@ -71,7 +71,7 @@ AudioWriter audioWriter(AudioConfig ac) {
   suggestConfig(aw.sio, &aw.par);
   nas = getConfig(aw.par, nas);
   aw.sizeFrames = nas.bufSizeFrames;
-  aw.sizeBytes = sizeof(*aw.output) * aw.sizeFrames * aw.par.pchan;
+  aw.sizeBytes = sizeof(*aw.synthData) * aw.sizeFrames * aw.par.pchan;
   aw.synthData = malloc(sizeof(*aw.synthData) * aw.sizeFrames);
   if (aw.synthData == NULL) { errx(1, "Error allocating synth buffer"); }
   aw.output = malloc(aw.sizeBytes);

@@ -5,6 +5,8 @@
 #include "../midi/midi_config.h"
 #include "../midi/midi_init.h"
 #include "../midi/midi_reader.h"
+#include "../synth/phase.h"
+#include "../synth/sine.h"
 #include "../synth/signal_generator.h"
 #include "../synth/synth_config.h"
 #include "../synth/synth_init.h"
@@ -17,6 +19,8 @@ IO io(int argc, char **argv) {
   io.audio = audioWriter(ac);
   io.midi = midiReader(mc);
   io.synth = synth(sc, io.audio.synthData, io.audio.sizeFrames);
+  makeSine();
+  setPhase(io.audio.par.rate);
   return io;
 }
 
