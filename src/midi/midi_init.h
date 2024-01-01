@@ -2,21 +2,19 @@
 
 #include <sndio.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <unistd.h>
 
 #include "midi_config.h"
 #include "midi_constants.h"
+#include "midi_reader.h"
 
-typedef struct mio_hdl Mio;
+typedef struct MidiParser {
+  size_t      chan;
+  size_t      head;
+  size_t      size;
+  MidiReader  reader;
+  uint8_t     cmds[MIDI_CMD_BUFSIZE];
+} MidiParser;
 
-typedef struct MidiReader {
-  bool      enabled;  
-  size_t    bytesRead;
-  size_t    chan;
-  size_t    size;
-  Mio     * mio;
-  uint8_t   data[MIDI_BUFSIZE];
-} MidiReader;
-
-MidiReader midiReader(MidiConfig);
-void killMidi(MidiReader *);
+MidiParser midiParser(MidiConfig);

@@ -4,7 +4,7 @@
 #include "io.h"
 #include "../midi/midi_config.h"
 #include "../midi/midi_init.h"
-#include "../midi/midi_reader.h"
+#include "../midi/midi_parser.h"
 #include "../synth/phase.h"
 #include "../synth/sine.h"
 #include "../synth/signal_generator.h"
@@ -17,7 +17,7 @@ IO io(int argc, char **argv) {
   MidiConfig mc = midiConfig(argc, argv);
   SynthConfig sc = synthConfig(argc, argv);
   io.audio = audioWriter(ac);
-  io.midi = midiReader(mc);
+  io.midi = midiParser(mc);
   io.synth = synth(sc, io.audio.synthData, io.audio.sizeFrames);
   makeSine();
   setPhase(io.audio.par.rate);
@@ -26,10 +26,10 @@ IO io(int argc, char **argv) {
 
 void monitor(IO io) {
   while (1) {
-    readMidi(&io.midi);
+    parseMidi(&io.midi);
     synthesize(&io.synth);
     writeAudio(&io.audio);
   }
   killAudio(&io.audio);
-  killMidi(&io.midi);
+  killMidi(&io.midi.reader);
 }

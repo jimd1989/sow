@@ -1,12 +1,12 @@
 #pragma once
 
 #include "../audio/audio_init.h"
-#include "../midi/midi_init.h"
+#include "../midi/midi_parser.h"
 #include "../synth/synth_init.h"
 
 typedef struct IO {
   AudioWriter audio;
-  MidiReader  midi;
+  MidiParser  midi;
   Synth       synth;
 } IO;
 
