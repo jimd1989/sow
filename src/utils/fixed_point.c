@@ -24,14 +24,6 @@ F16_16 f16_16_mult(F16_16 x, F16_16 y) {
   return product >> F16_16_FRAC_BITS;
 }
 
-/* Clean up */
-F16_16 f16_16_f1_16(F16_16 x) {
-  F16_16 n = ((1 << (F16_16_INT_BITS - 1)) - 1) << F16_16_FRAC_BITS;
-  n >>= F16_16_FRAC_BITS - 1;
-  /* Use NEGATE here? */
-  return n;
-}
-
 UF24_8 uf24_8(float f) {
   uint32_t n = (int32_t)f;
   float r = f - (float)n;

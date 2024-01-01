@@ -10,6 +10,7 @@
 #define F16_16_ONE (1 << F16_16_FRAC_BITS)
 #define F16_16_INT(X) (((X) & F16_16_INT_MASK) >> F16_16_FRAC_BITS)
 #define F16_16_FRAC(X) ((X) & F16_16_FRAC_MASK)
+#define F16_16_TO_F1_16(X) ((X) >> (F16_16_FRAC_BITS - 1))
 
 /* Used to represent phase of a 1024 index quarter-sine lookup table */
 #define UF24_8_INT_BITS 24
@@ -27,7 +28,6 @@ typedef uint32_t UF24_8;
 F16_16 f16_16(float);
 float f16_16_float(F16_16);
 F16_16 f16_16_mult(F16_16, F16_16);
-F16_16 f16_16_f1_16(F16_16);
 UF24_8 uf24_8(float);
 float uf24_8_float(UF24_8);
 UF24_8 uf24_8_mult(UF24_8, UF24_8);

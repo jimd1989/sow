@@ -66,21 +66,27 @@ void testFixedPoint(void) {
   }
   warnx(" f16_16_float(f16_16_f1_16(SHRT_MAX)) ~= 1");
   expectedF = 0.999969482421875f;
-  outputF = f16_16_float(f16_16_f1_16(SHRT_MAX));
+  outputF = f16_16_float(F16_16_TO_F1_16(f16_16(SHRT_MAX)));
   if (outputF != expectedF) {
     errx(1, "expected %f; got %f", expectedF, outputF);
   }
   warnx(" f16_16_float(f16_16_f1_16(-SHRT_MAX)) ~= -1");
   expectedF = -0.999969482421875f;
-  outputF = f16_16_float(f16_16_f1_16(-SHRT_MAX));
+  outputF = f16_16_float(F16_16_TO_F1_16(f16_16(-SHRT_MAX)));
   if (outputF != expectedF) {
     errx(1, "expected %f; got %f", expectedF, outputF);
   }
-  warnx(" f16_16_float(f16_16_f1_16(SHRT_MAX ÷ 2)) ~= 0.5");
-  expectedF = 0.5;
-  outputF = f16_16_float(f16_16_f1_16(SHRT_MAX / 8));
+  warnx(" f16_16_float(f16_16_f1_16(SHRT_MAX ÷ 8)) ~= 0.125");
+  expectedF = 0.124969482421875f;
+  outputF = f16_16_float(F16_16_TO_F1_16(f16_16(SHRT_MAX / 8)));
   if (outputF != expectedF) {
-    errx(1, "expected %f; got %f %d", expectedF, outputF, SHRT_MAX / 8);
+    errx(1, "expected %f; got %.20f", expectedF, outputF);
+  }
+  warnx(" f16_16_float(f16_16_f1_16(-SHRT_MAX ÷ 8)) ~= -0.125");
+  expectedF = -0.124969482421875f;
+  outputF = f16_16_float(F16_16_TO_F1_16(f16_16(-SHRT_MAX / 8)));
+  if (outputF != expectedF) {
+    errx(1, "expected %f; got %.20f", expectedF, outputF);
   }
   warnx(" uf24_8_float(uf24_8(1024.5)) = 1024.5");
   expectedF = 1024.5f;
