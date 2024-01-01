@@ -1,6 +1,6 @@
 - Scale keyboard
 - refine sine
   - branch free BACKWARDS and NEGATE?
-  - [0, 1] vs [0, `SHRT_MAX`]
 - Envelopes
+- Volume
 - Basic MIDI input
