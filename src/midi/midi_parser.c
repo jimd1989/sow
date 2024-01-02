@@ -7,8 +7,9 @@
 #include "midi_parser.h"
 #include "midi_reader.h"
 
-static void parseCC(MidiParser *);
+static void parseCC(MidiParser *, Cmd);
 static void readCmds(MidiParser *);
+/*
 static void printMidi(MidiReader *);
 static void printCmds(MidiParser *);
 
@@ -27,20 +28,25 @@ static void printCmds(MidiParser *mp) {
   }
   printf("\n");
 }
+*/
 
-static void parseCC(MidiParser *mp) {
+static void parseCC(MidiParser *mp, Cmd c) {
+  if (!CHAN_MATCH(c, mp->chan)) {
+    mp->head += 3;
+    return;
+  }
   mp->head++;
   mp->cmds[mp->bytesParsed++] = mp->reader.data[mp->head++];
   mp->cmds[mp->bytesParsed++] = mp->reader.data[mp->head++];
 }
 
 static void readCmds(MidiParser *mp) {
-  int8_t b = 0;
+  Cmd c = CMD_UNKNOWN;
   mp->bytesParsed = 0;
   mp->head = 0;
   while (mp->head < mp->reader.bytesRead) {
-    b = mp->reader.data[mp->head];
-    if (IS_CC(b)) { parseCC(mp); } 
+    c = mp->reader.data[mp->head];
+    if (IS_CC(c)) { parseCC(mp, c); } 
     else          { mp->head++;  }
   }
 }

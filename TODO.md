@@ -1,6 +1,6 @@
 - Scale keyboard
 - refine sine
   - branch free BACKWARDS and NEGATE?
+  - slight buzzing?
 - Envelopes
-- Volume
-- Basic MIDI input
+- Control rate vs audio rate

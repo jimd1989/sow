@@ -1,6 +1,7 @@
 #include <err.h>
 #include <sndio.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdlib.h>
 
 #include "../utils/fixed_point.h"
@@ -60,7 +61,7 @@ static NegotiatedAudioConfig getConfig(SioPar sp, NegotiatedAudioConfig nas) {
 
 AudioWriter audioWriter(AudioConfig ac) {
   bool nonBlockingIO = true;
-  UF16_16 defaultVol = f16_16(0.07f);
+  int8_t defaultVol = 5;
   NegotiatedAudioConfig nas = negotiatedConfig(ac);
   AudioWriter aw = {0};
   setVolume(&aw.masterVol, defaultVol);

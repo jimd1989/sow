@@ -18,12 +18,12 @@ IO io(int argc, char **argv) {
   AudioConfig ac = audioConfig(argc, argv);
   MidiConfig mc = midiConfig(argc, argv);
   SynthConfig sc = synthConfig(argc, argv);
+  setFadePeriod();
+  makeWaves();
   io.audio = audioWriter(ac);
   io.midi = midiParser(mc);
   io.synth = synth(sc, io.audio.synthData, io.audio.sizeFrames);
-  makeWaves();
   setPhase(io.audio.par.rate);
-  setFadePeriod();
   return io;
 }
 
