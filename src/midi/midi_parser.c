@@ -36,6 +36,7 @@ static void parseCC(MidiParser *mp) {
 
 static void readCmds(MidiParser *mp) {
   int8_t b = 0;
+  mp->bytesParsed = 0;
   mp->head = 0;
   while (mp->head < mp->reader.bytesRead) {
     b = mp->reader.data[mp->head];
@@ -48,7 +49,5 @@ void parseMidi(MidiParser *mp) {
   readMidi(&mp->reader);
   if (mp->reader.bytesRead) {
     readCmds(mp);
-    printCmds(mp);
-    mp->bytesParsed = 0;
   }
 }
