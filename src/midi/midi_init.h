@@ -10,9 +10,9 @@
 #include "midi_reader.h"
 
 typedef struct MidiParser {
+  size_t      bytesParsed;
   size_t      chan;
   size_t      head;
-  size_t      size;
   MidiReader  reader;
   uint8_t     cmds[MIDI_CMD_BUFSIZE];
 } MidiParser;

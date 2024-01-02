@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#include "../utils/fixed_point.h"
 #include "audio_config.h"
 #include "audio_constants.h"
 #include "audio_init.h"
@@ -58,8 +59,10 @@ static NegotiatedAudioConfig getConfig(SioPar sp, NegotiatedAudioConfig nas) {
 
 AudioWriter audioWriter(AudioConfig ac) {
   bool nonBlockingIO = true;
+  UF16_16 defaultVol = f16_16(0.07f);
   NegotiatedAudioConfig nas = negotiatedConfig(ac);
   AudioWriter aw = {0};
+  aw.masterVol = defaultVol;
   aw.sio = sio_open(SIO_DEVANY, SIO_PLAY, nonBlockingIO);
   if (aw.sio == NULL) { errx(1, "Error opening sound port %s", SIO_DEVANY); }
   /* First negotiation: all settings except buffer size */

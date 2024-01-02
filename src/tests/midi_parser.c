@@ -33,4 +33,29 @@ void testMidiParser(void) {
   if (output != expected) {
     errx(1, "expected %d; got %d", expected, output);
   }
+  warnx(" recognizes CC commands");
+  warnx("  channel 1 CC event recognized");
+  expected = 1;
+  output = IS_CC(176);
+  if (output != expected) {
+    errx(1, "expected %d; got %d", expected, output);
+  }
+  warnx("  channel 16 CC event recognized");
+  expected = 1;
+  output = IS_CC(191);
+  if (output != expected) {
+    errx(1, "expected %d; got %d", expected, output);
+  }
+  warnx("  channel 1 CC event -1 ignored");
+  expected = 0;
+  output = IS_CC(175);
+  if (output != expected) {
+    errx(1, "expected %d; got %d", expected, output);
+  }
+  warnx("  channel 16 CC event +1 ignored");
+  expected = 0;
+  output = IS_CC(192);
+  if (output != expected) {
+    errx(1, "expected %d; got %d", expected, output);
+  }
 }

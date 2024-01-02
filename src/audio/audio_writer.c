@@ -32,7 +32,7 @@ void writeAudio(AudioWriter *aw) {
   int16_t sample = 0;
   for (; s < aw->sizeFrames ; s++) {
     /* No need for dithering? Trunc okay because no floating point error ? */
-    sample = aw->synthData[s] >> F16_16_FRAC_BITS;
+    sample = f16_16_mult(aw->synthData[s], aw->masterVol) >> F16_16_FRAC_BITS;
     u = (uint8_t)(sample & 255);
     l = (uint8_t)(sample >> 8);
     for (c = 0 ; c < aw->par.pchan ; c++) {

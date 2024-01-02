@@ -13,6 +13,7 @@ typedef struct sio_par SioPar;
 typedef struct AudioWriter {
   size_t    sizeFrames;
   size_t    sizeBytes;
+  F16_16    masterVol;
   SioPar    par;
   Sio     * sio;
   F16_16  * synthData;
