@@ -6,10 +6,10 @@
 #include "../midi/midi_init.h"
 #include "../midi/midi_parser.h"
 #include "../synth/phase.h"
-#include "../synth/sine.h"
 #include "../synth/signal_generator.h"
 #include "../synth/synth_config.h"
 #include "../synth/synth_init.h"
+#include "../waves/sine.h"
 
 IO io(int argc, char **argv) {
   IO io = {0};

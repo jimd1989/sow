@@ -4,17 +4,17 @@
 
 #include "../utils/fixed_point.h"
 #include "sine.h"
-#include "synth_constants.h"
+#include "wave_constants.h"
 
-static F16_16 SINE_WAVE[SYNTH_WAVELEN] = {0};
+static F16_16 SINE_WAVE[WAVE_SINE_LEN] = {0};
 
 /* For a sine cycle [-1, 1], draw a quarter curve [0, 1], here represented by
  * 16.16 fixed point values [0, SHRT_MAX] */
 void makeSine(void) {
   int i = 0;
   float f = 0.0f;
-  for (; i < SYNTH_WAVELEN ; i++) {
-    f = (float)SHRT_MAX * sin(M_PI_2 * ((float)i / (float)(SYNTH_WAVELEN - 1)));
+  for (; i < WAVE_SINE_LEN ; i++) {
+    f = (float)SHRT_MAX * sin(M_PI_2 * ((float)i / (float)(WAVE_SINE_LEN - 1)));
     SINE_WAVE[i] = f16_16(f);
   }
 }

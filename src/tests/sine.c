@@ -2,9 +2,9 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "../utils/fixed_point.h"
 #include "../synth/phase.h"
-#include "../synth/sine.h"
+#include "../utils/fixed_point.h"
+#include "../waves/sine.h"
 #include "sine.h"
 
 #define EXCEEDS_EPSILON(X, Y, E) (abs((X) - (Y)) > E)

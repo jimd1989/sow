@@ -3,8 +3,8 @@
 
 /* Delete later */
 #include "phase.h"
-#include "sine.h"
 #include "../utils/fixed_point.h"
+#include "../waves/sine.h"
 #include <unistd.h>
 
 static UF16_16 PHASE = 0; /* Delete later */
