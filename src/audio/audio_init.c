@@ -7,6 +7,7 @@
 #include "audio_config.h"
 #include "audio_constants.h"
 #include "audio_init.h"
+#include "volume.h"
 
 static NegotiatedAudioConfig negotiatedConfig(AudioConfig);
 static SioPar setConfig(NegotiatedAudioConfig);
@@ -62,7 +63,7 @@ AudioWriter audioWriter(AudioConfig ac) {
   UF16_16 defaultVol = f16_16(0.07f);
   NegotiatedAudioConfig nas = negotiatedConfig(ac);
   AudioWriter aw = {0};
-  aw.masterVol = defaultVol;
+  setVolume(&aw.masterVol, defaultVol);
   aw.sio = sio_open(SIO_DEVANY, SIO_PLAY, nonBlockingIO);
   if (aw.sio == NULL) { errx(1, "Error opening sound port %s", SIO_DEVANY); }
   /* First negotiation: all settings except buffer size */

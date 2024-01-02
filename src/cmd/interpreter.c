@@ -9,7 +9,7 @@
 static void volCmd(MidiParser *, AudioWriter *);
 
 static void volCmd(MidiParser *mp, AudioWriter *aw) {
-  setVolume(aw, mp->cmds[++mp->head]);
+  setVolume(&aw->masterVol, mp->cmds[++mp->head]);
   mp->head++;
 }
 

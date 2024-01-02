@@ -9,6 +9,7 @@
 #include "../synth/signal_generator.h"
 #include "../synth/synth_config.h"
 #include "../synth/synth_init.h"
+#include "../utils/fade.h"
 #include "../waves/waves.h"
 #include "io.h"
 
@@ -22,6 +23,7 @@ IO io(int argc, char **argv) {
   io.synth = synth(sc, io.audio.synthData, io.audio.sizeFrames);
   makeWaves();
   setPhase(io.audio.par.rate);
+  setFadePeriod();
   return io;
 }
 

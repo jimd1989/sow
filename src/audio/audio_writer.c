@@ -3,9 +3,9 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "../utils/fixed_point.h"
 #include "audio_init.h"
 #include "audio_writer.h"
+#include "volume.h"
 
 static void wait(Sio *);
 
@@ -32,7 +32,7 @@ void writeAudio(AudioWriter *aw) {
   int16_t sample = 0;
   for (; s < aw->sizeFrames ; s++) {
     /* No need for dithering? Trunc okay because no floating point error ? */
-    sample = f16_16_mult(aw->synthData[s], aw->masterVol) >> F16_16_FRAC_BITS;
+    sample = mixVolume(&aw->masterVol, aw->synthData[s]);
     u = (uint8_t)(sample & 255);
     l = (uint8_t)(sample >> 8);
     for (c = 0 ; c < aw->par.pchan ; c++) {

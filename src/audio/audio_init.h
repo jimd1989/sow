@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#include "../utils/fade.h"
 #include "../utils/fixed_point.h"
 #include "audio_config.h"
 
@@ -13,7 +14,7 @@ typedef struct sio_par SioPar;
 typedef struct AudioWriter {
   size_t    sizeFrames;
   size_t    sizeBytes;
-  F16_16    masterVol;
+  Fader     masterVol;
   SioPar    par;
   Sio     * sio;
   F16_16  * synthData;
