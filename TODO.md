@@ -6,3 +6,4 @@
 - Control rate vs audio rate
 - Consider garbage MIDI stream
 - MIDI Clock?
+- Would smaller internal buffer be more responsive?

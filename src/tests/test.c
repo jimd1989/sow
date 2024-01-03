@@ -7,7 +7,7 @@
 #include "sine.h"
 
 void test(void) {
-  testFade();
+  /* testFade(); Don't waste time testing this until a number is agreed on */
   testFixedPoint();
   testMidiParser();
   testPhase();

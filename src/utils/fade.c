@@ -4,7 +4,9 @@
 static F16_16 FADER_DEC;
 
 void setFadePeriod(void) {
-    FADER_DEC = f16_16(0.00390625f); /* 1/256 */
+    /* FADER_DEC = f16_16(0.00390625f); */ /* 1/256 */
+    /* FADER_DEC = f16_16(0.0078125f);  */ /* 1/128 */
+    FADER_DEC = f16_16(0.015625f);         /* 1/64  */
 }
 
 void setFader(Fader *f, F16_16 new) {
