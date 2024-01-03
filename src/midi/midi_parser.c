@@ -7,6 +7,8 @@
 #include "midi_parser.h"
 #include "midi_reader.h"
 
+static void parseNoteOff(MidiParser *, Cmd);
+static void parseNoteOn(MidiParser *, Cmd);
 static void parseCC(MidiParser *, Cmd);
 static void readCmds(MidiParser *);
 /*
@@ -30,6 +32,34 @@ static void printCmds(MidiParser *mp) {
 }
 */
 
+static void parseNoteOff(MidiParser *mp, Cmd c) {
+  if (!CHAN_MATCH(c, mp->chan)) {
+    mp->head += 3;
+    return;
+  }
+  mp->head++;
+  mp->cmds[mp->bytesParsed++] = CMD_NOTE_OFF;
+  mp->cmds[mp->bytesParsed++] = mp->reader.data[mp->head++];
+  mp->cmds[mp->bytesParsed++] = mp->reader.data[mp->head++];
+}
+
+static void parseNoteOn(MidiParser *mp, Cmd c) {
+  uint8_t note = 0;
+  uint8_t vel = 0;
+  uint8_t cmd = 0;
+  if (!CHAN_MATCH(c, mp->chan)) {
+    mp->head += 3;
+    return;
+  }
+  mp->head++;
+  note = mp->reader.data[mp->head++];
+  vel = mp->reader.data[mp->head++];
+  cmd = vel ? CMD_NOTE_ON : CMD_NOTE_OFF; /* Note on with 0 vel = note off */
+  mp->cmds[mp->bytesParsed++] = cmd;
+  mp->cmds[mp->bytesParsed++] = note;
+  mp->cmds[mp->bytesParsed++] = vel;
+}
+
 static void parseCC(MidiParser *mp, Cmd c) {
   if (!CHAN_MATCH(c, mp->chan)) {
     mp->head += 3;
@@ -46,8 +76,10 @@ static void readCmds(MidiParser *mp) {
   mp->head = 0;
   while (mp->head < mp->reader.bytesRead) {
     c = mp->reader.data[mp->head];
-    if (IS_CC(c)) { parseCC(mp, c); } 
-    else          { mp->head++;  }
+    if      (IS_NOTE_ON(c))  { parseNoteOn(mp, c);  } 
+    else if (IS_NOTE_OFF(c)) { parseNoteOff(mp, c); }
+    else if (IS_CC(c))       { parseCC(mp, c);      } 
+    else                     { mp->head++;          }
   }
 }
 

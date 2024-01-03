@@ -5,5 +5,7 @@
  * interpreter. */
 typedef enum Cmd {
   CMD_UNKNOWN = 0,
-  CMD_VOL = 7
+  CMD_VOL = 7,
+  CMD_NOTE_ON = 128,
+  CMD_NOTE_OFF = 129
 } Cmd;

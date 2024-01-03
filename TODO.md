@@ -4,3 +4,5 @@
   - slight buzzing?
 - Envelopes
 - Control rate vs audio rate
+- Consider garbage MIDI stream
+- MIDI Clock?

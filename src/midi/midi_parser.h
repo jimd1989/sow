@@ -4,13 +4,9 @@
 
 #define CHAN_MASK ((1 << 4) - 1)
 #define CHAN_MATCH(X, Y) ((!(Y)) || (((X) & CHAN_MASK) == ((Y) - 1)))
-#define CC_START 176
-#define IS_CC(X) (((X) & CC_START) == CC_START)
-
-/* Well-known CC numbers map directly to the internal sow Cmd enum where
- * possible. All non-standard CC numbers are mapped to their respective commands
- * here. */
-//typedef enum CmdCC {
-//} MidiCC;
+#define IS_CMD(X, Y) (((X) ^ (Y)) < 16)
+#define IS_NOTE_OFF(X) (IS_CMD(X, 128))
+#define IS_NOTE_ON(X) (IS_CMD(X, 144))
+#define IS_CC(X) (IS_CMD(X, 176))
 
 void parseMidi(MidiParser *);
