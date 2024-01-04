@@ -2,9 +2,8 @@
 #include <sndio.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdlib.h>
 
-#include "../utils/fixed_point.h"
+#include "audio_buffers.h"
 #include "audio_config.h"
 #include "audio_constants.h"
 #include "audio_init.h"
@@ -75,18 +74,14 @@ AudioWriter audioWriter(AudioConfig ac) {
   aw.par = setConfig(nas);
   suggestConfig(aw.sio, &aw.par);
   nas = getConfig(aw.par, nas);
-  aw.sizeFrames = nas.bufSizeFrames;
-  aw.sizeBytes = sizeof(*aw.synthData) * aw.sizeFrames * aw.par.pchan;
-  aw.synthData = malloc(sizeof(*aw.synthData) * aw.sizeFrames);
-  if (aw.synthData == NULL) { errx(1, "Error allocating synth buffer"); }
-  aw.output = malloc(aw.sizeBytes);
-  if (aw.output == NULL) { errx(1, "Error allocating audio buffer"); }
+  aw.synthData = sampleBuffer(nas.bufSizeFrames);
+  aw.output = outputBuffer(nas.bufSizeFrames, aw.synthData.size, aw.par.pchan);
   if (sio_start(aw.sio) == 0) { errx(1, "Error starting audio"); }
   return aw;
 }
 
 void killAudio(AudioWriter *aw) {
   sio_close(aw->sio);
-  free(aw->synthData);
-  free(aw->output);
+  killSampleBuffer(&aw->synthData);
+  killOutputBuffer(&aw->output);
 }

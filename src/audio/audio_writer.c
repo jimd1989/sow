@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "audio_buffers.h"
 #include "audio_init.h"
 #include "audio_writer.h"
 #include "volume.h"
@@ -24,23 +25,29 @@ static void wait(Sio *sio) {
 }
 
 void writeAudio(AudioWriter *aw) {
-  size_t s = 0;
-  size_t o = 0;
-  size_t c = 0;
   uint8_t u = 0;
   uint8_t l = 0;
   int16_t sample = 0;
-  for (; s < aw->sizeFrames ; s++) {
+  size_t s = 0;
+  size_t c = 0;
+  SampleBuffer *sb = &aw->synthData;
+  OutputBuffer *ob = &aw->output;
+  for (; s < sb->size ; s++) {
     /* No need for dithering? Trunc okay because no floating point error ? */
-    sample = mixVolume(&aw->masterVol, aw->synthData[s]);
+    sample = mixVolume(&aw->masterVol, sb->data[s]);
     u = (uint8_t)(sample & 255);
     l = (uint8_t)(sample >> 8);
     for (c = 0 ; c < aw->par.pchan ; c++) {
-      aw->output[o++] = u;
-      aw->output[o++] = l;
+      ob->data[ob->bytesFilled++] = u;
+      ob->data[ob->bytesFilled++] = l;
     }
   }
-  wait(aw->sio);
-  (void)sio_write(aw->sio, aw->output, aw->sizeBytes);
-  memset(aw->synthData, 0, sizeof(*aw->synthData) * aw->sizeFrames);
+  ob->blocksFilled++;
+  if (ob->blocksFilled == ob->blocks) {
+    wait(aw->sio);
+    (void)sio_write(aw->sio, ob->data, ob->bytesFilled);
+    ob->blocksFilled = 0;
+    ob->bytesFilled = 0;
+  }
+  memset(sb->data, 0, sizeof(*sb->data) * sb->size);
 }

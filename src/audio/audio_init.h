@@ -1,24 +1,21 @@
 #pragma once
 
 #include <sndio.h>
-#include <stdint.h>
 #include <stdlib.h>
 
 #include "../utils/fade.h"
-#include "../utils/fixed_point.h"
+#include "audio_buffers.h"
 #include "audio_config.h"
 
 typedef struct sio_hdl Sio;
 typedef struct sio_par SioPar;
 
 typedef struct AudioWriter {
-  size_t    sizeFrames;
-  size_t    sizeBytes;
-  Fader     masterVol;
-  SioPar    par;
-  Sio     * sio;
-  F16_16  * synthData;
-  uint8_t * output;
+  Fader           masterVol;
+  SioPar          par;
+  Sio           * sio;
+  SampleBuffer    synthData;
+  OutputBuffer    output;
 } AudioWriter;
 
 typedef struct NegotiatedAudioConfig {

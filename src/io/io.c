@@ -22,7 +22,7 @@ IO io(int argc, char **argv) {
   makeWaves();
   io.audio = audioWriter(ac);
   io.midi = midiParser(mc);
-  io.synth = synth(sc, io.audio.synthData, io.audio.sizeFrames);
+  io.synth = synth(sc, io.audio.synthData.data, io.audio.synthData.size);
   setPhase(io.audio.par.rate);
   return io;
 }
