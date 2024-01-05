@@ -1,4 +1,3 @@
-#include "noise.h" /* Delete later */
 #include "signal_generator.h"
 
 /* Delete later */
@@ -15,5 +14,4 @@ void synthesize(Synth *s) {
     s->buffer[i] = sine(PHASE);
     PHASE += inc;
   }
-  //noise(&s->noise, s->buffer, s->sizeFrames); /* Delete later */
 }

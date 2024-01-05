@@ -6,3 +6,6 @@
 - Control rate vs audio rate
 - Consider garbage MIDI stream
 - MIDI Clock?
+- Dynamic ramping
+  - Parameter rather than constant
+  - Responds based on difference between old and new
