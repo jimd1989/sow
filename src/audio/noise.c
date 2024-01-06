@@ -1,7 +1,5 @@
 #include <stdint.h>
-#include <unistd.h>
 
-#include "../utils/fixed_point.h"
 #include "noise.h"
 
 static uint32_t RAND = 1; /* No need for unique seed */

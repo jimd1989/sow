@@ -85,6 +85,7 @@ static void readCmds(MidiParser *mp) {
 
 void parseMidi(MidiParser *mp) {
   readMidi(&mp->reader);
+  mp->bytesParsed = 0;
   if (mp->reader.bytesRead) {
     readCmds(mp);
   }

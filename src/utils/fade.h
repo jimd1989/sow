@@ -3,7 +3,8 @@
 #include "fixed_point.h"
 
 typedef struct Fader {
-  F16_16  balance;  
+  F16_16  balance;
+  F16_16  dec;
   F16_16  new;
   F16_16  old;
 } Fader;

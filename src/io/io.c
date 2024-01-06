@@ -9,7 +9,6 @@
 #include "../synth/signal_generator.h"
 #include "../synth/synth_config.h"
 #include "../synth/synth_init.h"
-#include "../utils/fade.h"
 #include "../waves/waves.h"
 #include "io.h"
 
@@ -18,7 +17,6 @@ IO io(int argc, char **argv) {
   AudioConfig ac = audioConfig(argc, argv);
   MidiConfig mc = midiConfig(argc, argv);
   SynthConfig sc = synthConfig(argc, argv);
-  setFadePeriod();
   makeWaves();
   io.audio = audioWriter(ac);
   io.midi = midiParser(mc);

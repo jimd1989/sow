@@ -9,7 +9,7 @@
 
 void test(void) {
   testAudioBuffers();
-  /* testFade(); Don't waste time testing this until a number is agreed on */
+  /* testFade(); Don't waste time on this until confirmed aurally */
   testFixedPoint();
   testMidiParser();
   testPhase();
