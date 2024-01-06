@@ -4,14 +4,20 @@
 #include "phase.h"
 #include "../utils/fixed_point.h"
 #include "../waves/sine.h"
+#include <stdint.h>
 #include <unistd.h>
 
-static UF16_16 PHASE = 0; /* Delete later */
+/* Delete later */
+static UF16_16 PHASE = 0;
+static UF16_16 INC = 0;
 
-void synthesize(Synth *s) {
-  UF16_16 inc = phaseIncrement(220.0f);
-  for (size_t i = 0 ; i < s->sizeFrames ; i++) {
-    s->buffer[i] = sine(PHASE);
-    PHASE += inc;
+void setPitch(Synth *sy, uint8_t note) {
+  INC = sy->keyboard.keys[note].inc;
+}
+
+void synthesize(Synth *sy) {
+  for (size_t i = 0 ; i < sy->sizeFrames ; i++) {
+    sy->buffer[i] = sine(PHASE);
+    PHASE += INC;
   }
 }

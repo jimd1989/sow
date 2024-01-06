@@ -19,16 +19,16 @@ IO io(int argc, char **argv) {
   SynthConfig sc = synthConfig(argc, argv);
   makeWaves();
   io.audio = audioWriter(ac);
+  setPhase(io.audio.par.rate);
   io.midi = midiParser(mc);
   io.synth = synth(sc, io.audio.synthData.data, io.audio.synthData.size);
-  setPhase(io.audio.par.rate);
   return io;
 }
 
 void monitor(IO io) {
   while (1) {
     parseMidi(&io.midi);
-    interpretCmds(&io.midi, &io.audio);
+    interpretCmds(&io.midi, &io.synth, &io.audio);
     synthesize(&io.synth);
     writeAudio(&io.audio);
   }

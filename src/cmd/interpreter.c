@@ -4,10 +4,12 @@
 #include "../audio/volume.h"
 #include "../midi/midi_cmd.h"
 #include "../midi/midi_init.h"
+#include "../synth/signal_generator.h"
+#include "../synth/synth_init.h"
 #include "interpreter.h"
 
 static void volCmd(MidiParser *, AudioWriter *);
-static void noteOnCmd(MidiParser *, AudioWriter *);
+static void noteOnCmd(MidiParser *, Synth *, AudioWriter *);
 static void noteOffCmd(MidiParser *, AudioWriter *);
 
 static void volCmd(MidiParser *mp, AudioWriter *aw) {
@@ -15,9 +17,10 @@ static void volCmd(MidiParser *mp, AudioWriter *aw) {
   mp->head++;
 }
 
-static void noteOnCmd(MidiParser *mp, AudioWriter *aw) {
-  setVolume(&aw->masterVol, 8);
-  mp->head += 3;
+static void noteOnCmd(MidiParser *mp, Synth *sy, AudioWriter *aw) {
+  mp->head++;
+  setPitch(sy, mp->cmds[mp->head++]);
+  setVolume(&aw->masterVol, mp->cmds[mp->head++]);
 }
 
 static void noteOffCmd(MidiParser *mp, AudioWriter *aw) {
@@ -25,14 +28,14 @@ static void noteOffCmd(MidiParser *mp, AudioWriter *aw) {
   mp->head += 3;
 }
 
-void interpretCmds(MidiParser *mp, AudioWriter *aw) {
+void interpretCmds(MidiParser *mp, Synth *sy, AudioWriter *aw) {
   Cmd c = CMD_UNKNOWN;
   mp->head = 0;
   while (mp->head < mp->bytesParsed) {
     c = mp->cmds[mp->head];
     switch(c) {
       case CMD_NOTE_ON:
-        noteOnCmd(mp, aw);
+        noteOnCmd(mp, sy, aw);
         break;
       case CMD_NOTE_OFF:
         noteOffCmd(mp, aw);

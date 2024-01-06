@@ -1,4 +1,3 @@
-- Scale keyboard
 - refine sine
   - branch free BACKWARDS and NEGATE?
   - slight buzzing?
