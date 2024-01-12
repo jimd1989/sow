@@ -30,6 +30,7 @@ SampleBuffer sampleBuffer(size_t outputBufsize) {
     sb.size = n;
     sb.data = sb.fastData;
   }
+  //warnx("INIT BUFFER WITH %p", (void *)sb.floatData);
   return sb;
 }
 

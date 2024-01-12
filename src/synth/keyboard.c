@@ -6,9 +6,12 @@
 #include "pitch.h"
 #include "synth_constants.h"
 
+#include <err.h>
+
 Keyboard keyboard() {
   uint8_t i = 0;
   Keyboard kb = {0};
+  //warnx("%u", phaseIncrement(hz(42)));
   for (; i < SYNTH_KEYS ; i++) {
     kb.keys[i].inc = phaseIncrement(hz(i));
     kb.keys[i].tuning = F16_16_ONE;

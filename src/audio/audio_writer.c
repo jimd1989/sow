@@ -8,6 +8,9 @@
 #include "audio_writer.h"
 #include "volume.h"
 
+#include <limits.h>
+#include <stdio.h>
+
 static void wait(Sio *);
 
 static void wait(Sio *sio) {
@@ -32,9 +35,16 @@ void writeAudio(AudioWriter *aw) {
   size_t c = 0;
   SampleBuffer *sb = &aw->synthData;
   OutputBuffer *ob = &aw->output;
+  //warnx("AUDIO %p", (void *)aw->synthData.floatData);
   for (; s < sb->size ; s++) {
     /* No need for dithering? Trunc okay because no floating point error ? */
     sample = mixVolume(&aw->masterVol, sb->data[s]);
+    //sample = mixVolumeF(&aw->masterVol, sb->floatData[s]);
+    //sample = (float)SHRT_MAX * sb->floatData[s];
+    //printf("%d\n", sample);
+    //if (sb->floatData[s] > 0.0) {
+    //  warnx("%f", sb->floatData[s]);
+    //}
     u = (uint8_t)(sample & 255);
     l = (uint8_t)(sample >> 8);
     for (c = 0 ; c < aw->par.pchan ; c++) {
@@ -45,6 +55,10 @@ void writeAudio(AudioWriter *aw) {
   ob->blocksFilled++;
   if (ob->blocksFilled == ob->blocks) {
     wait(aw->sio);
+    for (int zzz = 0; zzz < ob->bytesFilled ; zzz++) {
+      //putchar(ob->data[zzz]);
+      //ob->data[zzz] = 0;
+    }
     (void)sio_write(aw->sio, ob->data, ob->bytesFilled);
     ob->blocksFilled = 0;
     ob->bytesFilled = 0;

@@ -11,3 +11,6 @@
 
 void makeSine(void);
 F16_16 sine(UF16_16);
+
+void makeSineF(void);
+double sineF(UF16_16);

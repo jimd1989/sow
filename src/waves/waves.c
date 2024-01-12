@@ -4,5 +4,6 @@
 
 void makeWaves(void) {
   makeSine();
+  makeSineF();
   makeExp();
 }

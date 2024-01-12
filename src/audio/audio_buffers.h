@@ -16,6 +16,7 @@ typedef struct SampleBuffer {
   F16_16    fastData[AUDIO_MAX_SAMPLE_BUFSIZE];
   F16_16  * data;
   F16_16  * slowData;
+  double    floatData[AUDIO_MAX_SAMPLE_BUFSIZE];
 } SampleBuffer;
 
 /* Actual audio output data. A multiple of the SampleBuffer size. */

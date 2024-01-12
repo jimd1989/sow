@@ -6,7 +6,11 @@
 #include "sine.h"
 #include "wave_constants.h"
 
+#include <err.h>
+#include <stdio.h>
+
 static F16_16 SINE_WAVE[WAVE_SINE_LEN] = {0};
+static double SINE_WAVE_F[WAVE_SINE_LEN] = {0};
 
 /* For a sine cycle [-1, 1], draw a quarter curve [0, 1], here represented by
  * 16.16 fixed point values [0, SHRT_MAX] */
@@ -35,8 +39,33 @@ F16_16 sine(UF16_16 phase) {
   int i = INDEX(BACKWARDS(phase));
   F16_16 s1 = SINE_WAVE[i];
   F16_16 s2 = SINE_WAVE[i + 1];
-  F16_16 r = F16_16_FRAC(phase);
-  r = f16_16_mult(s2 - s1, r);
+  //F16_16 r = F16_16_FRAC(phase);
+  uint32_t MASK = ((1 << (30 - 10)) - 1);
+  //0.00000095367522590182
+  float x = (BACKWARDS(phase) & MASK) / (float)MASK;
+  F16_16 r = f16_16_mult(s2 - s1, f16_16(x));
+  //warnx("%f %u %f %u", x, f16_16(x), f16_16_float(F16_16_FRAC(BACKWARDS(phase))), F16_16_FRAC(BACKWARDS(phase)));
+  //F16_16 recp = f16_16(0.95367522590182f);
+  //F16_16 r = f16_16_mult(BACKWARDS(phase) & MASK, recp);
+  //r = f16_16_mult(s2 - s1, r);
   s1 += r;
   return NEGATE(s1, phase);
+}
+
+void makeSineF(void) {
+  int i;
+  for (i = 0; i < WAVE_SINE_LEN ; i++) {
+    SINE_WAVE_F[i] = sin(M_PI_2 * (i / (double)(WAVE_SINE_LEN - 1)));
+  }
+}
+
+double sineF(UF16_16 phase) {
+  int i = INDEX(BACKWARDS(phase));
+  //printf("%u %d ", phase, i);
+  double s = SINE_WAVE_F[i];
+  double s2 = SINE_WAVE_F[i + 1];
+  float x = (BACKWARDS(phase) & ((1 << (30 - 10)) - 1)) / (float) (1 << (30 - 10));
+  s = s + ((s2 - s) * x);
+  double neg = (phase & (1 << 31)) ? -1.0 : 1.0;
+  return neg * s;
 }

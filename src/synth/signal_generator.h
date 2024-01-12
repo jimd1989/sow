@@ -4,7 +4,7 @@
 
 #include <stdint.h> /* Delete later */
 
-void synthesize(Synth *);
+void synthesize(Synth *, double *);
 
 /* Delete later */
 void setPitch(Synth *, uint8_t);

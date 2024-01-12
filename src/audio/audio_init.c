@@ -9,6 +9,8 @@
 #include "audio_init.h"
 #include "volume.h"
 
+#include <err.h>
+
 static NegotiatedAudioConfig negotiatedConfig(AudioConfig);
 static SioPar setConfig(NegotiatedAudioConfig);
 static void suggestConfig(Sio *, SioPar *);
@@ -75,6 +77,7 @@ AudioWriter audioWriter(AudioConfig ac) {
   suggestConfig(aw.sio, &aw.par);
   nas = getConfig(aw.par, nas);
   aw.synthData = sampleBuffer(nas.bufSizeFrames);
+  //warnx("INIT AUDIO WITH %p", (void *)aw.synthData.floatData);
   aw.output = outputBuffer(nas.bufSizeFrames, aw.synthData.size, aw.par.pchan);
   if (sio_start(aw.sio) == 0) { errx(1, "Error starting audio"); }
   return aw;

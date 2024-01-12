@@ -11,7 +11,8 @@ typedef struct Synth {
   size_t      sizeFrames;
   size_t      polyphony;
   F16_16    * buffer;
+  double    * floatBuffer;
   Keyboard    keyboard;
 } Synth;
 
-Synth synth(SynthConfig, F16_16 *, size_t);
+Synth synth(SynthConfig, F16_16 *, size_t, double *);
