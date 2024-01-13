@@ -17,9 +17,9 @@ static F16_16 EXP_WAVE[WAVE_EXP_LEN] = {0};
  * from this wave as unipolar—see the Fader utility. */
 void makeExp(void) {
   int i = 0;
-  float phase = 0.0f;
-  float f = 0.0f;
-  float inc = 1.0f / (float)(WAVE_EXP_LEN - 1);
+  double phase = 0.0;
+  double f = 0.0;
+  double inc = 1.0 / (double)(WAVE_EXP_LEN - 1);
   for (; i < WAVE_EXP_LEN ; i++, phase += inc) {
     f = SHRT_MAX * (exp2(phase) - 1.0f);
     EXP_WAVE[i] = f16_16(f);
