@@ -7,13 +7,14 @@
  * are read by the internal synthesizer command interpreter. */
 typedef enum Cmd {
   CMD_UNKNOWN = 0,
+  CMD_STATUS = 3,
   CMD_NRPN = 6,
   CMD_VOL = 7,
   CMD_NOTE_ON = 128,
   CMD_NOTE_OFF = 129
 } Cmd;
 
-/* Undefined CC channels: 3, 9, 14, 15, 20-31, 85-90, 102-119 */
+/* Undefined CC channels: 9, 14, 15, 20-31, 85-90, 102-119 */
 
 /* Non-standard CC commands are generally expected to be addressed with NRPN
  * values, which have a 14 bit resolution. All sow-specific commands can likely

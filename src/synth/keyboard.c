@@ -13,7 +13,8 @@ void selectKey(Keyboard *kb, uint16_t nrpnVal) {
 void tuneKey(Keyboard *kb, F16_16 nrpnVal) {
   /* Decimal shift is probably wrong here. Needs to increase integer/fractional
    * resolutions when positive/negative respectively. Right shifting just loses
-   * data. What actually needs to happen is a non-16.16 interpretation. */
+   * data. What actually needs to happen is a non-16.16 interpretation. 
+   * Maybe okay actually? Consider a general formula. */
   Key *ky;
   if (kb->decimalShift < 0) { nrpnVal >>= kb->decimalShift; } 
   else                      { nrpnVal <<= kb->decimalShift; }

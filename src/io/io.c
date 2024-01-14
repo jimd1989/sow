@@ -9,6 +9,7 @@
 #include "../synth/signal_generator.h"
 #include "../synth/synth_config.h"
 #include "../synth/synth_init.h"
+#include "../utils/log.h"
 #include "../waves/waves.h"
 #include "io.h"
 
@@ -34,4 +35,5 @@ void monitor(IO io) {
   }
   killAudio(&io.audio);
   killMidi(&io.midi.reader);
+  killLogger();
 }

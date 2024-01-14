@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../utils/log.h"
 #include "synth_config.h"
 #include "synth_constants.h"
 
@@ -25,6 +26,7 @@ SynthConfig synthConfig(int argc, char **argv) {
   for (i = 1; i < argc; i++) {
     a = argv[i];
     if      (strcmp(a, "-voices") == 0)   { sc.voices = voices(argv[++i]); }
+    else if (strcmp(a, "-log") == 0)      { logger(argv[++i]);             }
   }
   return sc;
 }
