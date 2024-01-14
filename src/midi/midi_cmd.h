@@ -42,3 +42,7 @@ static uint8_t CMD_NRPNS[4] = {
   CMD_NRPN_UNKNOWN,
 };
 
+/* The maximum NRPN value should generally be a whole number. This "snapping"
+ * creates a discontinuity in the range, but can be desirable. */
+#define CMD_NRPN_VAL_MAX ((1 << 14) - 1)
+#define SNAP_MAX_NRPN_VAL(X) ((X) == CMD_NRPN_VAL_MAX ? (X) + 1 : (X))

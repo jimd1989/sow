@@ -5,6 +5,7 @@
 #include "../audio/volume.h"
 #include "../midi/midi_cmd.h"
 #include "../midi/midi_init.h"
+#include "../synth/keyboard.h"
 #include "../synth/signal_generator.h"
 #include "../synth/synth_init.h"
 #include "interpreter.h"
@@ -12,7 +13,7 @@
 static void volCmd(MidiParser *, AudioWriter *);
 static void noteOnCmd(MidiParser *, Synth *, AudioWriter *);
 static void noteOffCmd(MidiParser *, AudioWriter *);
-static void interpretNrpnCmd(MidiParser *);
+static void interpretNrpnCmd(MidiParser *, Synth *);
 
 static void volCmd(MidiParser *mp, AudioWriter *aw) {
   setVolume(&aw->masterVol, mp->cmds[++mp->head]);
@@ -30,25 +31,25 @@ static void noteOffCmd(MidiParser *mp, AudioWriter *aw) {
   mp->head += 3;
 }
 
-static void interpretNrpnCmd(MidiParser *mp) {
+static void interpretNrpnCmd(MidiParser *mp, Synth *sy) {
   uint16_t val = 0;
-  mp->head++;
-  switch (mp->cmds[mp->head++]) {
+  NrpnCmd c = mp->cmds[++mp->head];
+  val = (127 & mp->cmds[++mp->head]) << 7;
+  val |= 127 & mp->cmds[++mp->head];
+  switch (c) {
     case CMD_NRPN_AMP_CURVE:
       warnx("Adjusting amplitude curve");
       break;
     case CMD_NRPN_KEY_SELECT:
-      warnx("Selecting keyboard key");
+      selectKey(&sy->keyboard, val);
       break;
     case CMD_NRPN_KEY_TUNE:
-      warnx("Tuning keyboard key");
+      tuneKey(&sy->keyboard, (F16_16)SNAP_MAX_NRPN_VAL(val));
       break;
     case CMD_NRPN_UNKNOWN:
       warnx("Unknown NRPN cmd");
   }
-  val = (127 & mp->cmds[mp->head++]) << 7;
-  val |= 127 & mp->cmds[mp->head++];
-  warnx("...with value %d", val);
+  mp->head++;
 }
 
 void interpretCmds(MidiParser *mp, Synth *sy, AudioWriter *aw) {
@@ -67,7 +68,7 @@ void interpretCmds(MidiParser *mp, Synth *sy, AudioWriter *aw) {
         volCmd(mp, aw);
         break;
       case CMD_NRPN:
-        interpretNrpnCmd(mp);
+        interpretNrpnCmd(mp, sy);
         break;
       default:
         warnx("unknown command %d; dropping entire MIDI buffer", c);
