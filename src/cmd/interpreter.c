@@ -55,7 +55,7 @@ static void interpretNrpnCmd(MidiParser *mp, Synth *sy) {
 }
 
 static void statusCmd(MidiParser *mp, AudioWriter *aw) {
-  statusReport(aw);
+  statusReport(aw, mp);
   mp->head += 2;
 }
 

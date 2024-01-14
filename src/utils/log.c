@@ -5,13 +5,16 @@
 
 #include "../audio/audio_init.h"
 #include "../audio/audio_writer.h"
+#include "../midi/midi_init.h"
+#include "../midi/midi_parser.h"
 #include "log.h"
 
 static FILE *LOG_FILE = NULL;
 
-void statusReport(AudioWriter *aw) {
+void statusReport(AudioWriter *aw, MidiParser *mp) {
   if (LOG_FILE != NULL) {
     audioStatus(LOG_FILE, aw);
+    midiStatus(LOG_FILE, mp);
     fflush(LOG_FILE);
     fsync(fileno(LOG_FILE));
   }

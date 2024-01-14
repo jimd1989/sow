@@ -2,6 +2,7 @@
 #include <poll.h>
 #include <sndio.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <unistd.h>
 
 #include "midi_config.h"

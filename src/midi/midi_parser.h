@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdio.h>
+
 #include "midi_init.h"
 
 #define CHAN_MASK ((1 << 4) - 1)
@@ -10,3 +12,4 @@
 #define IS_CC(X) (IS_CMD(X, 176))
 
 void parseMidi(MidiParser *);
+void midiStatus(FILE *, MidiParser *);

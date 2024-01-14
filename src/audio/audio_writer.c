@@ -55,10 +55,10 @@ void writeAudio(AudioWriter *aw) {
 }
 
 void audioStatus(FILE *f, AudioWriter *aw) {
+  fprintf(f, "audio.bits=%d\n", aw->par.bits);
   fprintf(f, "audio.buffer.e2e=%d\n", aw->par.bufsz);
   fprintf(f, "audio.buffer.internal=%zu\n", aw->synthData.size);
   fprintf(f, "audio.buffer.output=%d\n", aw->par.appbufsz);
-  fprintf(f, "audio.bytes=%d\n", aw->par.bps);
   fprintf(f, "audio.channels=%d\n", aw->par.pchan);
   fprintf(f, "audio.rate=%d\n", aw->par.rate);
   fprintf(f, "audio.signed=%d\n", aw->par.sig);

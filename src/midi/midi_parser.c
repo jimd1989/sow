@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include <stdio.h> /* Delete later */
+#include <stdio.h>
 #include <unistd.h>
 
 #include "midi_cmd.h"
@@ -116,4 +116,17 @@ void parseMidi(MidiParser *mp) {
   if (mp->reader.bytesRead) {
     readCmds(mp);
   }
+}
+
+void midiStatus(FILE *f, MidiParser *mp) {
+  fprintf(f, "midi.buffer=%zu\n", mp->reader.size);
+  fprintf(f, "midi.bytesRead=%zu\n", mp->reader.bytesRead);
+  fprintf(f, "midi.channel=%zu\n", mp->chan);
+  fprintf(f, "midi.enabled=%d\n", mp->reader.enabled);
+  fprintf(f, "midi.nrpn.parameter=%d\n", mp->nrpn.par);
+  fprintf(f, "midi.nrpn.parameter.lsb=%d\n", 127 & mp->nrpn.par);
+  fprintf(f, "midi.nrpn.parameter.msb=%d\n", mp->nrpn.par >> 7);
+  fprintf(f, "midi.nrpn.value=%d\n", (mp->nrpn.valMsb << 7) | mp->nrpn.valLsb);
+  fprintf(f, "midi.nrpn.value.lsb=%d\n", mp->nrpn.valLsb);
+  fprintf(f, "midi.nrpn.value.msb=%d\n", mp->nrpn.valMsb);
 }
