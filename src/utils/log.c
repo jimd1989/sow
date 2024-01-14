@@ -1,22 +1,23 @@
 #include <err.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 
 #include "../audio/audio_init.h"
 #include "../audio/audio_writer.h"
 #include "../midi/midi_init.h"
 #include "../midi/midi_parser.h"
+#include "../synth/signal_generator.h"
+#include "../synth/synth_init.h"
 #include "log.h"
 
 static FILE *LOG_FILE = NULL;
 
-void statusReport(AudioWriter *aw, MidiParser *mp) {
+void statusReport(AudioWriter *aw, MidiParser *mp, Synth *sy) {
   if (LOG_FILE != NULL) {
     audioStatus(LOG_FILE, aw);
     midiStatus(LOG_FILE, mp);
+    synthStatus(LOG_FILE, sy);
     fflush(LOG_FILE);
-    fsync(fileno(LOG_FILE));
   }
 }
 

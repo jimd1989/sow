@@ -15,7 +15,7 @@ static void volCmd(MidiParser *, AudioWriter *);
 static void noteOnCmd(MidiParser *, Synth *, AudioWriter *);
 static void noteOffCmd(MidiParser *, AudioWriter *);
 static void interpretNrpnCmd(MidiParser *, Synth *);
-static void statusCmd(MidiParser *, AudioWriter *);
+static void statusCmd(MidiParser *, Synth *, AudioWriter *);
 
 static void volCmd(MidiParser *mp, AudioWriter *aw) {
   setVolume(&aw->masterVol, mp->cmds[++mp->head]);
@@ -54,8 +54,8 @@ static void interpretNrpnCmd(MidiParser *mp, Synth *sy) {
   mp->head++;
 }
 
-static void statusCmd(MidiParser *mp, AudioWriter *aw) {
-  statusReport(aw, mp);
+static void statusCmd(MidiParser *mp, Synth *sy, AudioWriter *aw) {
+  statusReport(aw, mp, sy);
   mp->head += 2;
 }
 
@@ -78,7 +78,7 @@ void interpretCmds(MidiParser *mp, Synth *sy, AudioWriter *aw) {
         interpretNrpnCmd(mp, sy);
         break;
       case CMD_STATUS:
-        statusCmd(mp, aw);
+        statusCmd(mp, sy, aw);
         break;
       default:
         warnx("unknown command %d; dropping entire MIDI buffer", c);

@@ -20,7 +20,7 @@ void tuneKey(Keyboard *kb, F16_16 nrpnVal) {
   else                      { nrpnVal <<= kb->decimalShift; }
   ky = &kb->keys[kb->currentKey];
   ky->tuning = nrpnVal;
-  ky->inc = phaseIncrement(f16_16_mult(ky->freq, ky->tuning));
+  ky->inc = phaseIncrement(ky->freq * f16_16_float(ky->tuning));
 }
 
 Keyboard keyboard() {

@@ -6,7 +6,7 @@
 #include "synth_constants.h"
 
 typedef struct Key {
-  F16_16  freq;
+  float   freq;
   F16_16  inc;
   F16_16  tuning;
   F1_16   vol;

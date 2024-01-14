@@ -6,7 +6,6 @@
 - MIDI Clock?
 - Still a slight pop on discrete volume changes, but need to play nice with knob
 - Decimal adjust command
-- Print synth state to stderr or FIFO
 - Optional audio output to stdio
 - Invert keyboard data structure?
 - Amplitude curve
