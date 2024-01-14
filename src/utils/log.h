@@ -1,5 +1,7 @@
 #pragma once
 
-void statusReport(void);
+#include "../audio/audio_init.h"
+
+void statusReport(AudioWriter *);
 void logger(char *);
 void killLogger(void);

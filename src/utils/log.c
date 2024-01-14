@@ -3,13 +3,15 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "../audio/audio_init.h"
+#include "../audio/audio_writer.h"
 #include "log.h"
 
 static FILE *LOG_FILE = NULL;
 
-void statusReport() {
+void statusReport(AudioWriter *aw) {
   if (LOG_FILE != NULL) {
-    fprintf(LOG_FILE, "STATUS OK\n");
+    audioStatus(LOG_FILE, aw);
     fflush(LOG_FILE);
     fsync(fileno(LOG_FILE));
   }

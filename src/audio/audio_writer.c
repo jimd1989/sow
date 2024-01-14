@@ -1,8 +1,10 @@
 #include <err.h>
 #include <poll.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
+#include "../utils/fixed_point.h"
 #include "audio_buffers.h"
 #include "audio_init.h"
 #include "audio_writer.h"
@@ -50,4 +52,15 @@ void writeAudio(AudioWriter *aw) {
     ob->bytesFilled = 0;
   }
   memset(sb->data, 0, sizeof(*sb->data) * sb->size);
+}
+
+void audioStatus(FILE *f, AudioWriter *aw) {
+  fprintf(f, "audio.buffer.e2e=%d\n", aw->par.bufsz);
+  fprintf(f, "audio.buffer.internal=%zu\n", aw->synthData.size);
+  fprintf(f, "audio.buffer.output=%d\n", aw->par.appbufsz);
+  fprintf(f, "audio.bytes=%d\n", aw->par.bps);
+  fprintf(f, "audio.channels=%d\n", aw->par.pchan);
+  fprintf(f, "audio.rate=%d\n", aw->par.rate);
+  fprintf(f, "audio.signed=%d\n", aw->par.sig);
+  fprintf(f, "audio.volume.master=%d\n", aw->masterVol.new >> 24);
 }
