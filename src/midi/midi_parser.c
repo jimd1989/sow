@@ -7,6 +7,11 @@
 #include "midi_parser.h"
 #include "midi_reader.h"
 
+#define NRPN_VAL_MSB 6
+#define NRPN_VAL_LSB 38
+#define NRPN_LSB 98
+#define NRPN_MSB 99
+
 static void parseNoteOff(MidiParser *, Cmd);
 static void parseNoteOn(MidiParser *, Cmd);
 static void parseCC(MidiParser *, Cmd);
@@ -65,9 +70,31 @@ static void parseCC(MidiParser *mp, Cmd c) {
     mp->head += 3;
     return;
   }
-  mp->head++;
-  mp->cmds[mp->bytesParsed++] = mp->reader.data[mp->head++];
-  mp->cmds[mp->bytesParsed++] = mp->reader.data[mp->head++];
+  switch (mp->reader.data[++mp->head]) {
+    case NRPN_MSB:
+      mp->head++;
+      mp->nrpn.par = (127 & mp->reader.data[mp->head++]) << 7;
+      break;
+    case NRPN_LSB:
+      mp->head++;
+      mp->nrpn.par |= (127 & mp->reader.data[mp->head++]);
+      mp->cmds[mp->bytesParsed++] = CMD_NRPN;
+      mp->cmds[mp->bytesParsed++] = CMD_NRPNS[SCALE_NRPN_CMD(mp->nrpn.par)];
+      break;
+    case NRPN_VAL_MSB:
+      mp->head++;
+      mp->nrpn.valMsb = (127 & mp->reader.data[mp->head++]);
+      break;
+    case NRPN_VAL_LSB:
+      mp->head++;
+      mp->nrpn.valLsb = (127 & mp->reader.data[mp->head++]);
+      mp->cmds[mp->bytesParsed++] = mp->nrpn.valMsb;
+      mp->cmds[mp->bytesParsed++] = mp->nrpn.valLsb;
+      break;
+    default:
+      mp->cmds[mp->bytesParsed++] = mp->reader.data[mp->head++];
+      mp->cmds[mp->bytesParsed++] = mp->reader.data[mp->head++];
+  }
 }
 
 static void readCmds(MidiParser *mp) {
