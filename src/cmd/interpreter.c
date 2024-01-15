@@ -9,6 +9,7 @@
 #include "../synth/signal_generator.h"
 #include "../synth/synth_init.h"
 #include "../utils/log.h"
+#include "decimal_position.h"
 #include "interpreter.h"
 
 static void volCmd(MidiParser *, AudioWriter *);
@@ -48,8 +49,11 @@ static void interpretNrpnCmd(MidiParser *mp, Synth *sy) {
     case CMD_NRPN_KEY_TUNE:
       tuneKey(&sy->keyboard, (F16_16)SNAP_MAX_NRPN_VAL(val));
       break;
+    case CMD_NRPN_DECIMAL_ADJUST:
+      adjustDecimal(sy, val);
+      break;
     case CMD_NRPN_UNKNOWN:
-      warnx("Unknown NRPN cmd");
+      break;
   }
   mp->head++;
 }

@@ -26,7 +26,8 @@ typedef enum NrpnCmd {
   CMD_NRPN_UNKNOWN = 0,
   CMD_NRPN_AMP_CURVE,
   CMD_NRPN_KEY_SELECT,
-  CMD_NRPN_KEY_TUNE
+  CMD_NRPN_KEY_TUNE,
+  CMD_NRPN_DECIMAL_ADJUST
 } NrpnCmd;
 
 /* When a full NRPN MIDI message is sent (99, <MSB>, 98, <LSB>) the parsed
@@ -40,7 +41,7 @@ static uint8_t CMD_NRPNS[4] = {
   CMD_NRPN_AMP_CURVE,
   CMD_NRPN_KEY_SELECT,
   CMD_NRPN_KEY_TUNE,
-  CMD_NRPN_UNKNOWN,
+  CMD_NRPN_DECIMAL_ADJUST
 };
 
 /* The maximum NRPN value should generally be a whole number. This "snapping"

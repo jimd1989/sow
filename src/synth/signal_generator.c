@@ -37,7 +37,7 @@ void synthStatus(FILE *f, Synth *sy) {
     fprintf(f, "synth.keyboard.%d.tuning=%f\n", i, f16_16_float(ky.tuning));
     fprintf(f, "synth.keyboard.%d.inc=%d\n", i, ky.vol >> 24);
   }
-  fprintf(f, "synth.keyboard.decimal=%d\n", kb->decimalShift);
+  fprintf(f, "synth.keyboard.decimalShift=%d\n", kb->decimalShift);
   fprintf(f, "synth.keyboard.selectedKey=%d\n", kb->currentKey);
   fprintf(f, "synth.voices.count=%zu\n", sy->polyphony);
 }

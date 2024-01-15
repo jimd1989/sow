@@ -11,20 +11,19 @@ void selectKey(Keyboard *kb, uint16_t nrpnVal) {
 }
 
 void tuneKey(Keyboard *kb, F16_16 nrpnVal) {
-  /* Decimal shift is probably wrong here. Needs to increase integer/fractional
-   * resolutions when positive/negative respectively. Right shifting just loses
-   * data. What actually needs to happen is a non-16.16 interpretation. 
-   * Maybe okay actually? Consider a general formula. */
   Key *ky;
-  if (kb->decimalShift < 0) { nrpnVal >>= kb->decimalShift; } 
-  else                      { nrpnVal <<= kb->decimalShift; }
+  nrpnVal <<= kb->decimalShift;
   ky = &kb->keys[kb->currentKey];
   ky->tuning = nrpnVal;
   ky->inc = phaseIncrement(ky->freq * f16_16_float(ky->tuning));
 }
 
+void adjustTuningDecimal(Keyboard *kb, uint8_t shift) {
+  kb->decimalShift = shift;
+}
+
 Keyboard keyboard() {
-  int8_t defaultDecimalShift = 5;
+  uint8_t defaultDecimalShift = 5;
   uint8_t i = 0;
   Keyboard kb = {0};
   kb.decimalShift = defaultDecimalShift;
