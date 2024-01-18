@@ -9,10 +9,11 @@ typedef struct Key {
   float   freq;
   F16_16  inc;
   F16_16  tuning;
-  F1_16   vol; /* probably not needed */
 } Key;
 
 typedef struct Keyboard {
+  /* Need a vel sensitivity index */
+  /* Need amplitude scaling by frequency */
   uint8_t currentKey;
   uint8_t decimalShift;
   Key     keys[SYNTH_KEYS];

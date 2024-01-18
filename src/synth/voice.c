@@ -11,7 +11,7 @@
 
 void playVoice(Voice *v, F16_16 *buffer, size_t size) {
   size_t i = 0;
-  for (; i < size ; i++, v->phase += v->inc) {
+  for (; i < size ; i++, v->phase += v->event.inc) {
     buffer[i] += MIX_VOICE(sine(v->phase));
   }
 }

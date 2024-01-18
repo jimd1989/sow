@@ -5,8 +5,6 @@
 - Consider garbage MIDI stream
 - MIDI Clock?
 - Still a slight pop on discrete volume changes, but need to play nice with knob
-- Decimal adjust command
 - Optional audio output to stdio
 - Invert keyboard data structure?
 - Amplitude curve
-- Sequencer-friendly note on/off handling

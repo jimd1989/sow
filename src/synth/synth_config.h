@@ -3,7 +3,7 @@
 #include <unistd.h>
 
 typedef struct SynthConfig {
-  size_t  voices;
+  size_t  placeholder;
 } SynthConfig;
 
 SynthConfig synthConfig(int, char **);

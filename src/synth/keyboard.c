@@ -31,7 +31,6 @@ Keyboard keyboard() {
     kb.keys[i].freq = hz(i);
     kb.keys[i].inc = phaseIncrement(kb.keys[i].freq);
     kb.keys[i].tuning = F16_16_ONE;
-    kb.keys[i].vol = F16_16_ONE;
   }
   return kb;
 }

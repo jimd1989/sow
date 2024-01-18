@@ -35,7 +35,6 @@ void synthStatus(FILE *f, Synth *sy) {
     fprintf(f, "synth.keyboard.%d.freq=%f\n", i, ky.freq);
     fprintf(f, "synth.keyboard.%d.inc=%u\n", i, ky.inc);
     fprintf(f, "synth.keyboard.%d.tuning=%f\n", i, f16_16_float(ky.tuning));
-    fprintf(f, "synth.keyboard.%d.inc=%d\n", i, ky.vol >> 24);
   }
   fprintf(f, "synth.keyboard.decimalShift=%d\n", kb->decimalShift);
   fprintf(f, "synth.keyboard.selectedKey=%d\n", kb->currentKey);
