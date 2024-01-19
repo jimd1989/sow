@@ -75,7 +75,7 @@ AudioWriter audioWriter(AudioConfig ac) {
   suggestConfig(aw.sio, &aw.par);
   nas = getConfig(aw.par, nas);
   aw.synthData = sampleBuffer(nas.bufSizeFrames);
-  aw.output = outputBuffer(nas.bufSizeFrames, aw.synthData.size, aw.par.pchan);
+  aw.output = outputBuffer(nas.bufSizeFrames, aw.synthData.size, aw.par.pchan); /* Incorrect? */
   if (sio_start(aw.sio) == 0) { errx(1, "Error starting audio"); }
   return aw;
 }

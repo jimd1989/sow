@@ -13,8 +13,8 @@
 #include "interpreter.h"
 
 static void volCmd(MidiParser *, AudioWriter *);
-static void noteOnCmd(MidiParser *, Synth *, AudioWriter *);
-static void noteOffCmd(MidiParser *, AudioWriter *);
+static void noteOnCmd(MidiParser *, Synth *); 
+static void noteOffCmd(MidiParser *, Synth *); 
 static void interpretNrpnCmd(MidiParser *, Synth *);
 static void statusCmd(MidiParser *, Synth *, AudioWriter *);
 
@@ -23,15 +23,17 @@ static void volCmd(MidiParser *mp, AudioWriter *aw) {
   mp->head++;
 }
 
-static void noteOnCmd(MidiParser *mp, Synth *sy, AudioWriter *aw) {
+static void noteOnCmd(MidiParser *mp, Synth *sy) {
+  uint8_t note = mp->cmds[++mp->head];
+  uint8_t vel = mp->cmds[++mp->head];
+  playNote(sy, note, vel);
   mp->head++;
-  setPitch(sy, mp->cmds[mp->head++]);
-  setVolume(&aw->masterVol, mp->cmds[mp->head++]);
 }
 
-static void noteOffCmd(MidiParser *mp, AudioWriter *aw) {
-  setVolume(&aw->masterVol, 0);
-  mp->head += 3;
+static void noteOffCmd(MidiParser *mp, Synth *sy) {
+  uint8_t note = mp->cmds[++mp->head];
+  mp->head += 2; /* Ignore release velocity */
+  releaseNote(sy, note);
 }
 
 static void interpretNrpnCmd(MidiParser *mp, Synth *sy) {
@@ -70,10 +72,10 @@ void interpretCmds(MidiParser *mp, Synth *sy, AudioWriter *aw) {
     c = mp->cmds[mp->head];
     switch(c) {
       case CMD_NOTE_ON:
-        noteOnCmd(mp, sy, aw);
+        noteOnCmd(mp, sy);
         break;
       case CMD_NOTE_OFF:
-        noteOffCmd(mp, aw);
+        noteOffCmd(mp, sy);
         break;
       case CMD_VOL:
         volCmd(mp, aw);

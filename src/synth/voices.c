@@ -12,7 +12,7 @@ static Voice *popFifo(VoiceFifo *);
 static void pushFifo(VoiceFifo *, Voice *);
 static VoiceRing ring(size_t);
 static void pushRing(VoiceRing *, Voice *);
-static void *popOldestFromRing(VoiceRing *);
+static Voice *popOldestFromRing(VoiceRing *);
 static void removeFromRing(VoiceRing *, Voice *);
 static void processReleasedVoices(Voices *, F16_16 *, size_t);
 
@@ -51,7 +51,7 @@ static void pushRing(VoiceRing *vr, Voice *x) {
   vr->head = (vr->head + 1) % vr->size;
 }
 
-static void *popOldestFromRing(VoiceRing *vr) {
+static Voice *popOldestFromRing(VoiceRing *vr) {
   return vr->data[vr->head];
 }
 
@@ -132,27 +132,26 @@ static void processReleasedVoices(Voices *vs, F16_16 *buffer, size_t size) {
   }
 }
 
-void playVoices(Voices *vs, F16_16 *buffer, size_t size) {
-  size_t n = vs->playing.population;
-  size_t i = vs->playing.head;
+void playVoices(Voices *vs, F16_16 *buffer, size_t sizeFrames) {
+  VoiceRing *p = &vs->playing;
+  int ringPos = ((p->size - p->population) + p->head) % p->size;
+  size_t i = 0;
   Voice *x = NULL;
-  for (; n >= 0 ; n--, i = (i + 1) % vs->playing.size) {
-    x = vs->playing.data[i];
-    playVoice(x, buffer, size);
+  for (; i < p->population ; i++, ringPos = (ringPos + 1) % p->size) {
+    x = p->data[ringPos];
+    playVoice(x, buffer, sizeFrames);
   }
-  processReleasedVoices(vs, buffer, size);
+  processReleasedVoices(vs, buffer, sizeFrames);
 }
 
-Voices voices(size_t size) {
+void startVoices(Voices *vs, size_t size) {
   size_t i = 0;
-  Voices vs = {0};
-  vs.size = size;
-  vs.free = fifo(size);
-  vs.released = fifo(size);
-  vs.playing = ring(size);
+  vs->size = size;
+  vs->free = fifo(size);
+  vs->released = fifo(size);
+  vs->playing = ring(size);
   for (; i < size ; i++) {
-    vs.data[i].n = i;
-    pushFifo(&vs.free, &vs.data[i]);
+    vs->data[i].n = i;
+    pushFifo(&vs->free, &vs->data[i]);
   }
-  return vs;
 }

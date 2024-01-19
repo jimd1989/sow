@@ -8,3 +8,4 @@
 - Optional audio output to stdio
 - Invert keyboard data structure?
 - Amplitude curve
+- Complete refactoring of init (memory issues)

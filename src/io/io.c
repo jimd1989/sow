@@ -13,27 +13,25 @@
 #include "../waves/waves.h"
 #include "io.h"
 
-IO io(int argc, char **argv) {
-  IO io = {0};
+void startIO(IO *io, int argc, char **argv) {
   AudioConfig ac = audioConfig(argc, argv);
   MidiConfig mc = midiConfig(argc, argv);
-  SynthConfig sc = synthConfig(argc, argv);
+  SynthConfig c = synthConfig(argc, argv);
   makeWaves();
-  io.audio = audioWriter(ac);
-  setPhase(io.audio.par.rate);
-  io.midi = midiParser(mc);
-  io.synth = synth(sc, io.audio.synthData.data, io.audio.synthData.size);
-  return io;
+  io->audio = audioWriter(ac);
+  setPhase(io->audio.par.rate);
+  io->midi = midiParser(mc);
+  startSynth(&io->synth, c, io->audio.synthData.data, io->audio.synthData.size);
 }
 
-void monitor(IO io) {
+void monitor(IO *io) {
   while (1) {
-    parseMidi(&io.midi);
-    interpretCmds(&io.midi, &io.synth, &io.audio);
-    synthesize(&io.synth);
-    writeAudio(&io.audio);
+    parseMidi(&io->midi);
+    interpretCmds(&io->midi, &io->synth, &io->audio);
+    synthesize(&io->synth);
+    writeAudio(&io->audio);
   }
-  killAudio(&io.audio);
-  killMidi(&io.midi.reader);
+  killAudio(&io->audio);
+  killMidi(&io->midi.reader);
   killLogger();
 }

@@ -29,7 +29,7 @@ typedef struct Voices {
   VoiceRing     playing;
 } Voices;
 
-Voices voices(size_t);
+void startVoices(Voices *, size_t);
 void triggerVoice(Voices *, NoteOn);
 void releaseVoice(Voices *, uint8_t);
 void playVoices(Voices *, F16_16 *, size_t);

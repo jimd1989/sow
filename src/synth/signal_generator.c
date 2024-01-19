@@ -1,29 +1,22 @@
 #include <stdio.h>
 
 #include "../utils/fixed_point.h"
+#include "events.h"
 #include "keyboard.h"
 #include "signal_generator.h"
 #include "synth_constants.h"
+#include "voices.h"
 
-/* Delete later */
-#include "phase.h"
-#include "../waves/sine.h"
-#include <stdint.h>
-#include <unistd.h>
+void playNote(Synth *sy, uint8_t note, uint8_t vel) {
+  triggerVoice(&sy->voices, noteOn(&sy->keyboard, note, vel));
+}
 
-/* Delete later */
-static UF16_16 PHASE = 0;
-static UF16_16 INC = 0;
-
-void setPitch(Synth *sy, uint8_t note) {
-  INC = sy->keyboard.keys[note].inc;
+void releaseNote(Synth *sy, uint8_t note) {
+  releaseVoice(&sy->voices, note);
 }
 
 void synthesize(Synth *sy) {
-  for (size_t i = 0 ; i < sy->sizeFrames ; i++) {
-    sy->buffer[i] = sine(PHASE);
-    PHASE += INC;
-  }
+  playVoices(&sy->voices, sy->buffer, sy->sizeFrames);
 }
 
 void synthStatus(FILE *f, Synth *sy) {

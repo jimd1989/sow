@@ -15,8 +15,9 @@ int main() {
 #else
 int main(int argc, char **argv) {
   warnx("prod");
-  IO x = io(argc, argv);
-  monitor(x);
+  IO x = {0};
+  startIO(&x, argc, argv);
+  monitor(&x);
   return 0;
 }
 #endif

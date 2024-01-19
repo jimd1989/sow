@@ -10,5 +10,5 @@ typedef struct IO {
   Synth       synth;
 } IO;
 
-IO io(int, char **);
-void monitor(IO);
+void startIO(IO *, int, char **);
+void monitor(IO *);

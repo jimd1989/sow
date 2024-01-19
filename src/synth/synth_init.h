@@ -16,4 +16,4 @@ typedef struct Synth {
   Voices      voices;
 } Synth;
 
-Synth synth(SynthConfig, F16_16 *, size_t);
+void startSynth(Synth *, SynthConfig, F16_16 *, size_t);
