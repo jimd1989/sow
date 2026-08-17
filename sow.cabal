@@ -1,0 +1,36 @@
+cabal-version:      3.0
+name:               sow
+version:            0.1.0.0
+-- synopsis:
+-- description:
+homepage:           http://dalrym.pl
+license:            BSD-3-Clause
+license-file:       LICENSE
+author:             Jim Dalrymple
+maintainer:         jamesdalrymple@protonmail.com
+-- copyright:
+build-type:         Simple
+extra-doc-files:    CHANGELOG.md
+-- extra-source-files:
+
+common warnings
+    ghc-options: -Wall
+
+executable sow
+    import:           warnings
+    main-is:          Main.hs
+    -- other-modules:
+    -- other-extensions:
+    build-depends:    base ^>=4.20.2.0
+    hs-source-dirs:
+      app
+      src/haskell
+    c-sources:
+      src/c/ffi.c
+    default-language: Haskell2010
+    default-extensions:
+      ForeignFunctionInterface
+      NoImplicitPrelude
+      OverloadedStrings
+      RecordWildCards
+      UnicodeSyntax
