@@ -20,18 +20,18 @@ executable sow
     import:           warnings
     main-is:          Main.hs
     other-modules:
-      Ffi
       Models.Config
+      Sndio
     -- other-extensions:
     build-depends:
       base ^>=4.20.2.0,
+      attoparsec,
       mtl,
       transformers
     hs-source-dirs:
       app
       src/haskell
     c-sources:
-      src/c/ffi.c
       src/c/sndio.c
     extra-libraries:
       sndio

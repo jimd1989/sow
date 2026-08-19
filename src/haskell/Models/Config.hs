@@ -1,11 +1,12 @@
-module Models.Config (Config, config) where
+module Models.Config (Config(..), config) where
 
-import Prelude (Int)
+import Prelude (Int, String)
 
 data Config = Config
-  { sampleRate ∷ Int,
+  { device ∷ String,
+    sampleRate ∷ Int,
     channels ∷ Int
   }
 
 config ∷ Config
-config = Config 4800 2
+config = Config "default" 48000 2 

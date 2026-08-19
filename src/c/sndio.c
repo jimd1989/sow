@@ -1,18 +1,25 @@
 #include <err.h>
 #include <sndio.h>
+#include <stdbool.h>
+#include <unistd.h>
 
-#define SIO_HANDLES_COUNT 16
-
-typedef struct sio_hdl* Sio;
-
-static Sio SIO_HANDLES[SIO_HANDLES_COUNT] = {0};
-
-int start_audio(int n) {
-  int m = n - 1;
-  if (n < 1 || n > SIO_HANDLES_COUNT) {
-    warnx("select an audio handle between 1 – %d", SIO_HANDLES_COUNT);
-    return -1;
+struct sio_hdl *start_audio(char *device) {
+  struct sio_hdl *sio = NULL;
+  struct sio_par par  = {0};
+  sio = sio_open(device, SIO_PLAY, true);
+  if (sio == NULL) {
+    warnx("could not open sndio device %s", device);
   }
-  /* init here */
-  return m;
+  sio_initpar(&par);
+  par.bits     = 16;
+  par.appbufsz = 1; /* soundcard will overwrite with min size */
+  par.rate     = 48000;
+  par.pchan    = 2;
+  par.rchan    = 2;
+  par.le       = 1;
+  par.sig      = 1;
+  sio_setpar(sio, &par);
+  sio_getpar(sio, &par);
+  warnx("%dch %dHz %d frame buffer", par.pchan, par.rate, par.appbufsz);
+  return sio; 
 }
