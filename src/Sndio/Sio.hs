@@ -11,6 +11,7 @@ import Foreign.Marshal.Alloc (alloca)
 import Foreign.Ptr (Ptr, nullPtr)
 import Foreign.Storable (Storable(..)) 
 import System.IO.Error (ioError, userError)
+import Helpers (try')
 import Models.Config (Config(..))
 import Sndio.Ffi (sio_open, sio_initpar, sio_setpar, sio_getpar, sio_start) 
 import Sndio.SioHdl (SioHdl)
@@ -29,15 +30,15 @@ notNull ω err = when (ω == nullPtr) $ ioError (userError err)
 notZero ∷ CInt → String → IO ()
 notZero n err = when (n == 0) $ ioError (userError err)
 
-sioOpen ∷ MonadIO m ⇒ String → SioMode → m (Ptr SioHdl)
+sioOpen ∷ String → SioMode → IO (Ptr SioHdl)
 sioOpen device mode = do
   let n  = toCUInt mode
   sioHdl ← liftIO $ withCString device $ \ω → sio_open ω n 1
   liftIO $ notNull sioHdl $ "error opening sndio " ++ device
   pure sioHdl
 
-sioSetPar ∷ MonadIO m ⇒ Ptr SioHdl → m Sio
-sioSetPar hdl = liftIO $ alloca $ \parPtr → do
+sioSetPar ∷ Ptr SioHdl → IO Sio
+sioSetPar hdl = alloca $ \parPtr → do
   sio_initpar parPtr
   poke parPtr sioPar
   ok1 ← sio_setpar hdl parPtr
@@ -47,14 +48,14 @@ sioSetPar hdl = liftIO $ alloca $ \parPtr → do
   par ← peek parPtr
   pure $ Sio par hdl
 
-sioStart ∷ MonadIO m ⇒ Ptr SioHdl → m ()
-sioStart hdl = liftIO $ do
+sioStart ∷ Ptr SioHdl → IO ()
+sioStart hdl = do
   ok ← sio_start hdl
   notZero ok "could not start sndio playback"
 
 sio ∷ (MonadIO m, MonadError String m) ⇒ Config → m Sio
 sio ω = do
-  ptr ← sioOpen (device ω) SioPlay
-  hdl ← sioSetPar ptr
-  sioStart ptr
+  ptr ← try' $ sioOpen (device ω) SioPlay
+  hdl ← try' $ sioSetPar ptr
+  try' $ sioStart ptr
   pure hdl
