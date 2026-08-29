@@ -1,6 +1,6 @@
 module Sndio.Sio (Sio(..), sio) where
 
-import Prelude (($), (==), (++), IO, Show, pure)
+import Prelude (($), (==), (++), IO, Show(..), pure, putStrLn)
 import Control.Monad (when)
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Control.Monad.Except (MonadError)
@@ -13,16 +13,28 @@ import Foreign.Storable (Storable(..))
 import System.IO.Error (ioError, userError)
 import Helpers (try')
 import Models.Config (Config(..))
-import Sndio.Ffi (sio_open, sio_initpar, sio_setpar, sio_getpar, sio_start) 
+import Sndio.Ffi (sio_open, sio_initpar, sio_setpar, sio_getpar, sio_start, 
+                  sio_stop) 
 import Sndio.SioHdl (SioHdl)
 import Sndio.SioMode (SioMode(..), toCUInt)
 import Sndio.SioPar (SioPar(..), sioPar)
 
 -- Sio represents a running sndio audio handle
-data Sio = Sio {
+data Sio m = Sio {
+  name   ∷ String,
+  mode   ∷ SioMode,
   params ∷ SioPar,
-  handle ∷ Ptr SioHdl
-} deriving (Show)
+  handle ∷ Ptr SioHdl,
+  stop   ∷ m ()
+}
+
+instance Show (Sio m) where
+  show ω = "{" ++
+           "name = "   ++ (show $ name ω)   ++ ", " ++
+           "mode = "   ++ (show $ mode ω)   ++ ", " ++
+           "params = " ++ (show $ params ω) ++ ", " ++ 
+           "handle = " ++ (show $ handle ω) ++ 
+           "}"
 
 notNull ∷ Ptr a → String → IO ()
 notNull ω err = when (ω == nullPtr) $ ioError (userError err)
@@ -37,7 +49,7 @@ sioOpen device mode = do
   liftIO $ notNull sioHdl $ "error opening sndio " ++ device
   pure sioHdl
 
-sioSetPar ∷ Ptr SioHdl → IO Sio
+sioSetPar ∷ Ptr SioHdl → IO SioPar
 sioSetPar hdl = alloca $ \parPtr → do
   sio_initpar parPtr
   poke parPtr sioPar
@@ -45,17 +57,25 @@ sioSetPar hdl = alloca $ \parPtr → do
   notZero ok1 "could not set sndio parameters"
   ok2 ← sio_getpar hdl parPtr
   notZero ok2 "could not get sndio parameters"
-  par ← peek parPtr
-  pure $ Sio par hdl
+  peek parPtr
 
 sioStart ∷ Ptr SioHdl → IO ()
 sioStart hdl = do
   ok ← sio_start hdl
   notZero ok "could not start sndio playback"
 
-sio ∷ (MonadIO m, MonadError String m) ⇒ Config → m Sio
+sioStop ∷ Ptr SioHdl → String → IO ()
+sioStop hdl deviceName = do
+  ok ← sio_stop hdl
+  notZero ok "could not stop sndio playback"
+  putStrLn $ ("sndio " ++ deviceName ++ " stopped")
+
+sio ∷ (MonadIO m, MonadError String m) ⇒ Config → m (Sio m)
 sio ω = do
-  ptr ← try' $ sioOpen (device ω) SioPlay
-  hdl ← try' $ sioSetPar ptr
-  try' $ sioStart ptr
-  pure hdl
+  let deviceName = device ω
+  let sioMode    = SioPlay
+  hdl ← try' $ sioOpen deviceName sioMode
+  par ← try' $ sioSetPar hdl
+  try'   $ sioStart hdl
+  liftIO $ putStrLn ("sndio " ++ deviceName ++ " playing")
+  pure $ Sio deviceName sioMode par hdl (try' $ sioStop hdl deviceName)

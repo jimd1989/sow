@@ -1,10 +1,10 @@
-module Sndio.Ffi (sio_open, sio_initpar, sio_setpar, sio_getpar, sio_start) 
-  where
+module Sndio.Ffi (sio_open, sio_initpar, sio_setpar, sio_getpar, sio_start,
+                  sio_stop) where
 
 import Prelude (IO)
-import Foreign.C.String (CString, withCString)
+import Foreign.C.String (CString)
 import Foreign.C.Types (CBool(..), CInt(..), CUInt(..))
-import Foreign.Ptr (Ptr(..))
+import Foreign.Ptr (Ptr)
 import Sndio.SioHdl (SioHdl)
 import Sndio.SioPar (SioPar)
 
@@ -20,3 +20,5 @@ foreign import ccall "sio_getpar" sio_getpar
   ∷ (Ptr SioHdl) → (Ptr SioPar) → IO CInt
 
 foreign import ccall "sio_start" sio_start ∷ (Ptr SioHdl) → IO CInt
+
+foreign import ccall "sio_stop" sio_stop ∷ (Ptr SioHdl) → IO CInt
