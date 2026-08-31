@@ -20,26 +20,33 @@ executable sow
     import:           warnings
     main-is:          Main.hs
     other-modules:
+      Helpers
       Models.Config
-      Sndio
+      Sndio.Buffer
+      Sndio.Ffi
+      Sndio.Sio
+      Sndio.SioHdl
+      Sndio.SioMode
+      Sndio.SioPar
     -- other-extensions:
     build-depends:
       base ^>=4.20.2.0,
       attoparsec,
       mtl,
-      transformers
+      transformers,
+      vector
     hs-source-dirs:
       app
-      src/haskell
-    c-sources:
-      src/c/sndio.c
+      src
     extra-libraries:
       sndio
     default-language: Haskell2010
     default-extensions:
+      DuplicateRecordFields
       FlexibleContexts
       ForeignFunctionInterface
       NoImplicitPrelude
       OverloadedStrings
       RecordWildCards
+      TypeApplications
       UnicodeSyntax
